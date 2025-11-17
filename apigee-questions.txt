@@ -1,0 +1,58 @@
+# Senior-Level Apigee Interview Questions
+
+Here are the most commonly asked interview questions for senior Apigee positions, categorized by topic:
+
+## **Architecture & Design**
+1. How would you design an Apigee architecture for a global enterprise with regional backends?
+2. Explain how you'd implement a zero-downtime deployment strategy in Apigee.
+3. How would you design an API versioning strategy using Apigee?
+4. Describe your approach to designing a multi-tenant API platform in Apigee.
+
+## **Security**
+5. How would you implement OAuth 2.0 with Apigee for a high-traffic API?
+6. Explain JWT validation best practices in Apigee.
+7. How would you protect against DDoS attacks using Apigee?
+8. Describe your approach to implementing mutual TLS (mTLS) in Apigee.
+
+## **Performance & Scaling**
+9. How would you optimize an Apigee proxy for high latency backends?
+10. What strategies would you use to reduce latency in Apigee API calls?
+11. How would you handle rate limiting for different customer tiers?
+12. Explain Apigee caching strategies and when to use each type.
+
+## **Troubleshooting**
+13. How would you diagnose and resolve high latency in Apigee proxies?
+14. Describe your approach to debugging a proxy that's returning 500 errors.
+15. How would you troubleshoot OAuth token generation failures?
+
+## **Advanced Policies**
+16. Explain how you'd implement a circuit breaker pattern in Apigee.
+17. How would you use ServiceCallout vs. TargetEndpoint and when to choose each?
+18. Describe how to implement custom analytics in Apigee beyond the standard reports.
+
+## **CI/CD & Operations**
+19. Explain your Apigee CI/CD pipeline implementation.
+20. How would you automate Apigee proxy deployments across environments?
+21. Describe your approach to Apigee environment management and promotion processes.
+
+## **Integration Patterns**
+22. How would you implement an API composition pattern in Apigee?
+23. Explain how to handle partial failures in a scatter-gather pattern implementation.
+24. Describe how you'd implement a canary release strategy in Apigee.
+
+## **Monitoring & Analytics**
+25. How would you set up custom alerts for API anomalies in Apigee?
+26. Explain how to export and analyze Apigee analytics data for business insights.
+27. How would you implement real-time API monitoring dashboards?
+
+## **Hybrid & Multi-Cloud**
+28. Explain the key considerations when designing a hybrid Apigee implementation.
+29. How would you implement cross-cloud API management with Apigee?
+30. Describe your experience with Apigee hybrid and runtime plane architecture.
+
+## **Leadership & Strategy**
+31. How would you evangelize API-first design in an organization?
+32. Describe your approach to API governance using Apigee.
+33. How would you measure and demonstrate the ROI of Apigee to executives?
+
+For senior roles, expect follow-up questions probing your depth of experience, decision-making rationale, and ability to articulate trade-offs between different approaches. Be prepared with concrete examples from your past projects.

@@ -1,0 +1,24 @@
+How would you use ServiceCallout vs. TargetEndpoint and when to choose each? explain in very brief
+
+### **ServiceCallout vs. TargetEndpoint in Apigee (Brief)**  
+
+#### **`ServiceCallout`**  
+- **What**: Makes **internal/sub-requests** during proxy flow (e.g., call another API).  
+- **When**:  
+  - Fetch **additional data** mid-flow (e.g., auth validation).  
+  - **Async** calls (non-blocking).  
+  - **Aggregate responses** from multiple services.  
+
+#### **`TargetEndpoint`**  
+- **What**: Defines the **final backend** for the API request.  
+- **When**:  
+  - **Primary backend call** (e.g., your database/service).  
+  - Needs **load balancing/timeout** control.  
+
+#### **Key Difference**:  
+- **`ServiceCallout`**: Side-calls **during** processing.  
+- **`TargetEndpoint`**: **Final destination** of the request.  
+
+**Choose `ServiceCallout`** for internal lookups; **`TargetEndpoint`** for main backend. 🚀  
+
+Need an example?

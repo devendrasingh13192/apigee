@@ -1,0 +1,8 @@
+<BasicAuthentication name="ApplyBasicAuthHeader">
+   <DisplayName>ApplyBasicAuthHeader</DisplayName>
+   <Operation>Encode</Operation>
+   <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+   <User ref="BasicAuth.credentials.username" />
+   <Password ref="BasicAuth.credentials.password" />
+   <AssignTo createNew="false">request.header.Authorization</AssignTo>
+</BasicAuthentication>

@@ -1,0 +1,4 @@
+<DecodeJWS name="JWS-Decode-HS256">
+    <DisplayName>JWS Verify HS256</DisplayName>
+    <Source>var.JWS</Source>
+</DecodeJWS>

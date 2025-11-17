@@ -1,0 +1,11 @@
+<MessageLogging name="LogToSyslog">
+  <Syslog>
+    <Message>[3f509b58 tag="{organization.name}.{apiproxy.name}.{environment.name}"] Weather request for WOEID {request.queryparam.w}.</Message>
+    <Host>logs-01.loggly.com</Host>
+    <Port>514</Port>
+    <Protocol>TCP</Protocol>
+    <FormatMessage>true</FormatMessage>
+    <DateFormat>yyyy-MM-dd'T'HH:mm:ss.SSSZ</DateFormat>
+  </Syslog>
+  <logLevel>ALERT</logLevel>
+</MessageLogging>

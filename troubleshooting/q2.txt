@@ -1,0 +1,25 @@
+Describe your approach to debugging a proxy that's returning 500 errors. explain in very brief
+
+### **Debugging 500 Errors in Apigee (Brief)**  
+
+1. **Check Trace Tool**  
+   - Use **Apigee Debug Session** to pinpoint failing policy/step.  
+
+2. **Review Logs**  
+   - **Error Details**: Check `fault.name` and `error.message` in logs.  
+
+3. **Common Causes**  
+   - **Invalid Policy Config**: Fix syntax errors (e.g., XML/JSON).  
+   - **Backend Timeout**: Adjust `HTTPTargetConnection` timeouts.  
+   - **Quota/Spike Arrest**: Verify limits aren’t exceeded.  
+   - **Auth Failures**: Validate tokens/keys (`VerifyAPIKey`, `VerifyJWT`).  
+
+4. **Test Incrementally**  
+   - Disable policies one-by-one to isolate the issue.  
+
+5. **Monitor & Alert**  
+   - Set up **alerts for 500 spikes** in Apigee Analytics.  
+
+**Result**: **Quickly squash errors!** 🐞  
+
+Need specific error details? 🚀

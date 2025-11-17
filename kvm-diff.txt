@@ -1,0 +1,13 @@
+In Apigee Edge:
+A developer encrypts the password and uses the Management API/UI to store it in an environment-scoped KVM.
+
+The API proxy uses the KeyValueMapOperations policy to retrieve the password to connect to the database.
+
+In Apigee X (Recommended Pattern):
+A DevOps/SRE engineer stores the database password in Google Cloud Secret Manager.
+
+The engineer grants the Apigee X runtime's Service Account the secretmanager.secretAccessor IAM role on that specific secret.
+
+The API proxy's first call might use a ServiceCallout policy to securely fetch the secret from Secret Manager over a private channel.
+
+The proxy then populates a KVM with this value (using JavaScript or a dedicated policy) for subsequent, low-latency access.

@@ -1,0 +1,23 @@
+Explain how you'd implement a circuit breaker pattern in Apigee in very brief
+
+### **Circuit Breaker in Apigee (Brief)**  
+
+1. **Track Failures**  
+   - Use **`JavaScript`** to count backend errors (store in **KVM/Cache**).  
+
+2. **Trip Threshold**  
+   - If failures > **threshold** (e.g., 5 errors/minute), **block requests** with `RaiseFault`.  
+
+3. **Fallback Response**  
+   - Return **cached data** or **graceful error** (e.g., `503 Service Unavailable`).  
+
+4. **Auto-Retry**  
+   - After **cooldown** (e.g., 1 min), allow limited traffic to test recovery.  
+
+**Key Policies**:  
+- **`JavaScript`** (logic) + **`LookupCache`** (track failures).  
+- **`RaiseFault`** (block requests when tripped).  
+
+**Result**: **Prevent cascading failures!** ⚡  
+
+Need a policy snippet? 🚀

@@ -1,0 +1,12 @@
+<GetOAuthV2Info name="MyTokenAttrsPolicy">
+  <AccessToken ref="request.queryparam.access_token"></AccessToken>
+</GetOAuthV2Info>
+
+
+<GetOAuthV2Info name="MyAuthCodeAttrsPolicy">
+  <AuthorizationCode ref="request.formparam.code"></AuthorizationCode>
+</GetOAuthV2Info>
+
+<GetOAuthV2Info name="MyRefreshTokenAttrsPolicy">
+  <RefreshToken ref="request.queryparam.refresh_token"/>
+</GetOAuthV2Info>

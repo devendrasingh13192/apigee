@@ -1,0 +1,20 @@
+Describe how to implement custom analytics in Apigee beyond the standard reports. explain in very brief
+
+### **Custom Analytics in Apigee (Brief)**  
+
+1. **Log Custom Variables**  
+   - Use **`MessageLogging`** policy to capture unique data (e.g., `client_type`, `response_size`).  
+
+2. **Export Analytics Data**  
+   - **BigQuery**: Stream logs to BigQuery via **Apigee Analytics Hub**.  
+   - **SIEM Tools**: Push to Splunk/ELK using **Apigee Webhooks**.  
+
+3. **Custom Dashboards**  
+   - Visualize in **Data Studio**/Grafana using exported data.  
+
+4. **Edge JS Tracking**  
+   - Inject **JavaScript** in responses to log client-side metrics (e.g., `page_load_time`).  
+
+**Result**: **Tailored insights beyond default reports!** 📊  
+
+Need query examples? 🚀

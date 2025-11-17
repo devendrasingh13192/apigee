@@ -1,0 +1,9 @@
+apigee              loadbalancing        route
+apiproxy            message              router
+application         messageid            servicecallout
+client              organization         system
+current             proxy                target
+environment         ratelimit            variable
+error               request              virtualhost
+is                  response
+                               

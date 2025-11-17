@@ -1,0 +1,42 @@
+
+
+## **1. Router**
+- Routes API requests to Message Processors
+- Load balancing across MPs
+- TLS termination
+
+## **2. Message Processor** 
+- Executes API proxies and policies
+- Request/response processing
+- Policy enforcement
+
+## **3. Cassandra**
+- Runtime data storage
+- Analytics data persistence
+- KVM, cache, and quotas
+
+## **4. ZooKeeper**
+- Configuration management
+- Service discovery
+- Cluster coordination
+- Leader election
+
+## **5. OpenLDAP**
+- User authentication and authorization
+- Stores user credentials and roles
+- Management API security
+
+## **6. Edge UI (Management Server)**
+- Web-based management console
+- API proxy development interface
+- Analytics dashboards
+
+**Additional Component:**
+- **PostgreSQL** - For some management data (often considered part of Management Server)
+
+**Flow:** 
+**Edge UI** → Management API → **ZooKeeper** → **Router** → **Message Processor** → Backend
+**Authentication:** **OpenLDAP**
+**Data Storage:** **Cassandra** + **PostgreSQL**
+
+Thank you for the correction!

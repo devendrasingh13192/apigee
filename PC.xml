@@ -1,0 +1,23 @@
+<PopulateCache async="false" continueOnError="false" enabled="true" name="Populate-Cache-1">
+    <DisplayName>Populate Cache 1</DisplayName>
+    <Properties/>
+    <CacheKey>
+    <Prefix>UserToken</Prefix>
+    <KeyFragment>apiAccessToken</KeyFragment>
+    <KeyFragment ref="request.queryparam.client_id" />
+    </CacheKey>
+    <!-- Omit this element if you're using the included shared cache. -->
+    <CacheResource/>
+    <Scope>Exclusive</Scope>
+    <ExpirySettings>
+        <TimeoutInSeconds>300</TimeoutInSeconds>
+    </ExpirySettings>
+    <Source>flowVar</Source>
+</PopulateCache>
+
+<!-- Configures how cached values should be written at runtime.
+
+The Populate Cache policy is designed for writing entries in a short-term general-purpose cache. It's used in conjunction with 
+the Lookup Cache policy (for reading cache entries) and the Invalidate Cache policy (for invalidating entries).
+
+For caching the responses of backend resources, see the Response Cache policy. -->

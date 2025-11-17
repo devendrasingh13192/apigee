@@ -1,0 +1,103 @@
+Authorization Code
+    
+    Invalid Redirect URI
+    HTTP/1.1 400 Bad Request
+    {"ErrorCode" : "invalid_request", "Error" :"Invalid redirection uri http://www.invalid_example.com"}    
+
+    No Redirect URI
+    HTTP/1.1 400 Bad Request {"ErrorCode" : "invalid_request", "Error" :"Redirection URI is required"}
+
+    Invalid Key
+    HTTP/1.1 401 Unauthorized {"ErrorCode" : "invalid_request", "Error" :"Invalid client id : AVD7ztXReEYyjpLFkkPiZpLEjeF2aYAz. ClientId is Invalid"}
+
+    Missing Key
+    HTTP/1.1 400 Bad Request
+    {"ErrorCode" : "invalid_request", "Error" :"The request is missing a required parameter : client_id"}
+
+    Invalid Response Type
+    HTTP/1.1 400 Bad Request
+    {"ErrorCode" : "invalid_request", "Error" :"Response type must be code"}
+
+    Missing Response Type
+    HTTP/1.1 400 Bad Request
+    {"ErrorCode" : "invalid_request", "Error" :"The request is missing a required parameter : response_type"}
+
+Generate AccessToken
+
+    Invalid Auth Code
+    HTTP status: 400 Bad Request
+    {"ErrorCode" : "invalid_request", "Error" :"Invalid Authorization Code"}
+
+    No Redirect URI
+    HTTP/1.1 400 Bad Request
+    {"ErrorCode" : "invalid_request", "Error" :"Required param : redirect_uri"}
+
+    Invalid Redirect URI
+    HTTP/1.1 400 Bad Request
+    {"ErrorCode" : "invalid_request", "Error" :"Invalid redirect_uri : oob"}
+
+    Invalid Client ID when GenerateResponse is false
+
+    {
+    "fault": {
+        "faultstring": "Invalid client identifier {0}",
+        "detail": {
+            "errorcode": "oauth.v2.InvalidClientIdentifier"
+        }
+    }
+    }
+
+    Invalid Client ID when GenerateResponse is true
+    {"ErrorCode" : "invalid_client", "Error" :"ClientId is Invalid"}
+
+    Invalid GrantType
+    HTTP/1.1 400 Bad Request
+    {"ErrorCode" : "invalid_request", "Error" :"Unsupported grant type : client_credentials_invalid"}
+
+    No Username
+    HTTP/1.1 400 Bad Request
+    {"ErrorCode" : "invalid_request", "Error" :"Required param : username"}
+
+    No Password
+    HTTP/1.1 400 Bad Request
+    {"ErrorCode" : "invalid_request", "Error" :"Required param : password"}
+
+    No GrantType (Custom Policy)
+    HTTP/1.1 400 Bad Request
+    {"ErrorCode" : "invalid_request", "Error" :"Required param : grant_type"}
+
+    No AuthCode
+    HTTP/1.1 400 Bad Request
+    {"ErrorCode" : "invalid_request", "Error" :"Required param : code"}
+
+Implicit
+
+    Invalid Client ID
+
+HTTP/1.1 401 Unauthorized
+{"ErrorCode" : "invalid_request", "Error" :"Invalid client id : AVD7ztXReEYyjpLFkkPiZpLEjeF2aYAz. ClientId is Invalid"}
+No Client ID
+
+HTTP/1.1 400 Bad Request
+{"ErrorCode" : "invalid_request", "Error" :"The request is missing a required parameter : client_id"}
+Invalid Response Type
+
+HTTP/1.1 400 Bad Request
+{"ErrorCode" : "invalid_request", "Error" :"Response type must be token"}
+No Response Type
+
+HTTP/1.1 400 Bad Request
+{"ErrorCode" : "invalid_request", "Error" :"The request is missing a required parameter : response_type"}
+Invalid Redirect URI
+
+HTTP/1.1 400 Bad Request
+{"ErrorCode" : "invalid_request", "Error" :"Invalid redirection uri http://www.invalid_example.com"}
+No Redirect URI
+
+HTTP/1.1 400 Bad Request
+{"ErrorCode" : "invalid_request", "Error" :"Redirection URI is required"}
+
+
+
+
+

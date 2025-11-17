@@ -1,0 +1,23 @@
+Describe your experience with Apigee hybrid and runtime plane architecture in very brief
+
+### **Apigee Hybrid & Runtime Plane (Brief)**  
+
+1. **Hybrid Setup**  
+   - Deployed **runtime plane** on **GKE/Anthos** (on-prem/cloud).  
+   - Managed **synchronization** between Apigee control plane (cloud) and runtime (K8s).  
+
+2. **Key Components**  
+   - **Cassandra/Mart**: For distributed caching.  
+   - **Envoy**: Edge proxy for traffic routing.  
+
+3. **Use Cases**  
+   - **Low-latency APIs** (runtime near backends).  
+   - **Data residency compliance** (keep processing on-prem).  
+
+4. **Challenges Solved**  
+   - **Auto-scaling** runtime pods.  
+   - **Secure** cloud-to-on-prem connectivity.  
+
+**Result**: **Cloud flexibility + on-prem control!** 🏗️  
+
+Need specifics? 🚀

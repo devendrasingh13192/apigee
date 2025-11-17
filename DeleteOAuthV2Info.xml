@@ -1,0 +1,7 @@
+<DeleteOAuthV2Info name="DeleteAccessToken">
+     <AccessToken ref="request.header.access_token"></AccessToken>
+</DeleteOAuthV2Info>
+
+<DeleteOAuthV2Info name="DeleteAuthCode">
+     <AuthorizationCode ref="request.queryparam.code"></AuthorizationCode>
+</DeleteOAuthV2Info>

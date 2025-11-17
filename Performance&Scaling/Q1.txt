@@ -1,0 +1,64 @@
+How would you optimize an Apigee proxy for high latency backends? explain in very brief
+
+### **Optimizing Apigee for High-Latency Backends (Brief)**  
+
+1. **Caching**  
+   - Use **`PopulateCache` & `LookupCache`** to store responses and avoid repeated backend calls.  
+
+2. **Conditional Requests**  
+   - Implement **`If-Modified-Since`/`ETag`** to return `304 Not Modified` when possible.  
+
+3. **Async Processing**  
+   - For non-critical ops, use **`ServiceCallout`** with **`Async`** mode to decouple requests.  
+
+4. **Payload Compression**  
+   - Enable **`Accept-Encoding: gzip`** in requests/responses.  
+
+5. **Timeout Tuning**  
+   - Adjust **`HTTPTargetConnection` timeouts** to avoid premature failures.  
+
+6. **Circuit Breaker**  
+   - Use **`JavaScript` + `RaiseFault`** to fail fast if backend is slow/unavailable.  
+
+**Result**: **Faster responses + reduced backend load** 🚀  
+
+Need policy snippets?
+
+-------------------------------------------------------------------------------------
+
+### **`If-Modified-Since` & `ETag` in Apigee (Brief)**  
+
+#### **What They Do**  
+- **`If-Modified-Since`**: Client sends timestamp of its cached data. Backend replies with `304 Not Modified` if unchanged since that time.  
+- **`ETag`**: Client sends a hash of its cached data. Backend compares hashes and replies `304` if unchanged.  
+
+#### **When to Use**  
+- Optimize **read-heavy APIs** (e.g., product catalogs, static data).  
+- Reduce backend load by **skipping redundant processing**.  
+
+#### **Apigee Implementation**  
+1. **Backend Must Support**  
+   - Ensure your backend implements `Last-Modified` (for time checks) or `ETag` (for hash checks).  
+
+2. **Forward Headers**  
+   - Use **`AssignMessage`** to pass client’s `If-Modified-Since`/`ETag` to the backend:  
+     ```xml  
+     <AssignMessage name="Forward-Conditional-Headers">  
+       <AssignTo createNew="false" transport="http" type="request"/>  
+       <Add>  
+         <Headers>  
+           <Header name="If-Modified-Since">{request.header.If-Modified-Since}</Header>  
+           <Header name="If-None-Match">{request.header.If-None-Match}</Header>  
+         </Headers>  
+       </Add>  
+     </AssignMessage>  
+     ```  
+
+3. **Cache Policy Integration**  
+   - Combine with **`ResponseCache`** to store `304` responses in Apigee’s cache.  
+
+#### **Result**  
+- **Faster responses** (no full payload if unchanged).  
+- **Lower backend CPU usage** (fewer full computations).  
+
+Need a full proxy example? 

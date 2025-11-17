@@ -1,0 +1,24 @@
+header.payload.signature
+
+<VerifyJWS name="JWS-Verify-HS256">
+    <DisplayName>JWS Verify HS256</DisplayName>
+    <Algorithm>HS256</Algorithm>
+    <Source>request.formparam.JWS</Source>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <SecretKey>
+        <Value ref="private.secretkey"/>
+    </SecretKey>
+</VerifyJWS>
+
+header..signature
+
+<VerifyJWS name="JWS-Verify-RS256">
+    <DisplayName>JWS Verify RS256</DisplayName>
+    <Algorithm>RS256</Algorithm>
+    <Source>request.formparam.JWS</Source>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <PublicKey>
+        <Value ref="public.publickey"/>
+    </PublicKey>
+    <DetachedContent>private.payload</DetachedContent>
+</VerifyJWS>

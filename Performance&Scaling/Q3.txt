@@ -1,0 +1,29 @@
+How would you handle rate limiting for different customer tiers? explain in very brief
+
+### **Rate Limiting for Customer Tiers in Apigee (Brief)**  
+
+1. **API Product Tiers**  
+   - Define **different API products** (e.g., `Free`, `Pro`, `Enterprise`) with tiered quotas.  
+
+2. **Quota Policy**  
+   - Apply **`Quota` policy** per product:  
+     ```xml  
+     <Quota name="Tiered-Quota">  
+       <Allow count="1000" countRef="verifyapikey.VerifyAPIKey.apiproduct.developer.quota.limit"/>  
+       <Interval ref="verifyapikey.VerifyAPIKey.apiproduct.developer.quota.interval">1</Interval>  
+       <Distributed>true</Distributed>  
+     </Quota>  
+     ```  
+
+3. **Dynamic Quotas**  
+   - Fetch limits from **KVM/Database** for custom tiers (e.g., `Gold: 10K reqs/hour`).  
+
+4. **Spike Arrest**  
+   - Add **`SpikeArrest`** (e.g., `10ps` for Free, `100ps` for Enterprise).  
+
+5. **Header-Based Overrides**  
+   - Allow temporary boosts via **`X-RateLimit-Boost`** (validated by JWT).  
+
+**Result**: **Fair usage + upsell opportunities!** 🚀  
+
+Need a full example?

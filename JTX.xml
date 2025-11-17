@@ -1,0 +1,178 @@
+<!-- This policy converts messages from the JavaScript Object Notation (JSON) format to extensible markup language (XML)
+, giving you several options for controlling how messages are converted.
+
+The policy is particularly useful if you want to transform messages using XSL. After converting a JSON payload to XML,
+use the XSL Transform policy with a custom style sheet to perform the transformation you need. -->
+
+<JSONToXML async="false" continueOnError="false" enabled="true" name="JSON-to-XML-1">
+    <DisplayName>JSON to XML 1</DisplayName>
+    <Source>request</Source>
+    <OutputVariable>request</OutputVariable>
+    <Options>
+        <OmitXmlDeclaration>false</OmitXmlDeclaration>
+        <DefaultNamespaceNodeName>$default</DefaultNamespaceNodeName>
+        <NamespaceSeparator>:</NamespaceSeparator>
+        <AttributeBlockName>#attrs</AttributeBlockName>
+        <AttributePrefix>@</AttributePrefix>
+        <ObjectRootElementName>Root</ObjectRootElementName>
+        <ArrayRootElementName>Array</ArrayRootElementName>
+        <ArrayItemElementName>Item</ArrayItemElementName>
+        <Indent>false</Indent>
+        <TextNodeName>#text</TextNodeName>
+        <NullValue>I_AM_NULL</NullValue>
+        <InvalidCharsReplacement>_</InvalidCharsReplacement>
+    </Options>
+</JSONToXML>
+<!--  -->
+<NamespaceBlockName>#namespaces</NamespaceBlockName>
+<DefaultNamespaceNodeName>$default</DefaultNamespaceNodeName>
+<NamespaceSeparator>:</NamespaceSeparator>
+
+<!-- {
+   "population": {
+       "#namespaces": {
+           "$default": "http://www.w3.org/1999/people",
+           "exp": "http://www.w3.org/1999/explorers"
+       },
+       "person": "John Smith",
+       "exp:person": "Pedro Cabral"
+   }
+} converts to -->
+
+<population xmlns="http://www.w3.org/1999/people" xmlns:exp="http://www.w3.org/1999/explorers">
+  <person>John Smith</person>
+  <exp:person>Pedro Cabral</exp:person>
+</population>
+
+<!--  -->
+
+<!-- {
+  "abc": "123",
+  "efg": "234"
+} -->
+
+<ObjectRootElementName>Root</ObjectRootElementName>
+
+<Root>
+   <abc>123</abc>
+   <efg>234</efg>
+</Root>
+
+<!--  -->
+
+<AttributeBlockName>#attrs</AttributeBlockName>
+
+{
+    "person" : {
+        "#attrs" : {
+            "firstName" : "John",
+            "lastName" : "Smith"
+        },        
+        "occupation" : "explorer",
+    }
+}
+
+<person firstName="John" lastName="Smith">
+  <occupation>explorer</occupation>
+</person>
+
+<AttributePrefix>@</AttributePrefix>
+
+{
+"person" : {
+   "@firstName" : "John",
+   "@lastName" : "Smith"
+   "occupation" : "explorer",
+
+ }
+}
+
+<person firstName="John" lastName="Smith">
+  <occupation>explorer</occupation>
+</person>
+
+<!--  -->
+
+<ArrayRootElementName>Array</ArrayRootElementName>
+<ArrayItemElementName>Item</ArrayItemElementName>
+
+[
+"John Cabot",
+{
+ "explorer": "Pedro Cabral"
+},
+"John Smith"
+]
+
+<Array>
+  <Item>John Cabot</Item>
+  <Item>
+    <explorer>Pedro Cabral</explorer>
+  </Item>
+  <Item>John Smith</Item>
+</Array>
+
+<!--  -->
+
+<Indent>true</Indent>
+
+{"n": [1, 2, 3] }
+
+ <Array>
+    <n>1</n>
+    <n>2</n>
+    <n>3</n>
+  </Array>
+
+<Indent>false</Indent>
+
+<Array><n>1</n><n>2</n><n>3</n></Array>
+
+<!--  -->
+
+<TextNodeName>age</TextNodeName>
+
+{
+    "person": {
+        "firstName": "John",
+        "lastName": "Smith",
+        "age": 25
+    }
+}
+
+<person>
+  <firstName>John</firstName>25<lastName>Smith</lastName>
+</person>
+
+<!-- if TextNodeName is not specified -->
+
+<person>
+  <firstName>John</firstName>
+  <age>25</age>
+  <lastName>Smith</lastName>
+</person>
+
+<!--  -->
+
+<NullValue>I_AM_NULL</NullValue>
+
+{"person" : "I_AM_NULL"}
+
+<person></person>
+
+<!-- Where no value (or a value other than I_AM_NULL) is specified for the Null value, then the same payload converts to: -->
+
+<person>I_AM_NULL</person>
+
+<InvalidCharsReplacement>_</InvalidCharsReplacement>
+
+{
+    "First%%%Name": "John"
+}
+
+<First_Name>John<First_Name>
+
+
+
+
+

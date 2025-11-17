@@ -1,0 +1,28 @@
+<SpikeArrest
+  continueOnError="[false|true]"
+  enabled="[true|false]"
+  name="policy_name"
+>
+  <DisplayName>display_name</DisplayName>
+  <Properties/>
+  <Identifier ref="flow_variable"/>
+  <MessageWeight ref="flow_variable"/>
+  <Rate ref="flow_variable">rate[pm|ps]</Rate>
+  <UseEffectiveCount>[false|true]</UseEffectiveCount>
+</SpikeArrest>
+
+<SpikeArrest name="Spike-Arrest-1">
+  <Rate>5ps</Rate> // 1000/5=200 miliseconds for 1 req
+</SpikeArrest>  
+
+<SpikeArrest async="false" continueOnError="false" enabled="true" name="SpikeArreast">
+  <DisplayName>SpikeArreast</DisplayName>
+  <Rate>300pm</Rate>
+</SpikeArrest>
+
+<SpikeArrest name="Spike-Arrest-1">
+  <Rate>12pm</Rate>
+  <Identifier ref="client_id" />
+  <MessageWeight ref="request.header.weight" />
+</SpikeArrest>
+

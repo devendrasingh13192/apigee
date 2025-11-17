@@ -1,0 +1,20 @@
+<!-- Configures how cached values should be retrieved at runtime.
+
+This policy is intended for use in general purpose short-term caching.
+It is used in conjunction with the Populate Cache policy (for writing entries) and the Invalidate Cache policy
+(for invalidating entries). -->
+
+<LookupCache async="false" continueOnError="false" enabled="true" name="Lookup-Cache-1">
+    <DisplayName>Lookup Cache 1</DisplayName>
+    <Properties/>
+    <CacheKey>
+    <Prefix>UserToken</Prefix>
+    <KeyFragment>apiAccessToken</KeyFragment>
+    <KeyFragment ref="request.queryparam.client_id" />
+    </CacheKey>
+    <!-- Omit this element if you're using the included shared cache. -->
+    <CacheResource/>
+    <CacheLookupTimeoutInSeconds/>
+    <Scope>Exclusive</Scope>
+    <AssignTo>flowVar</AssignTo>
+</LookupCache>

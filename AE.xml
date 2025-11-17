@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AccessEntity async="false" continueOnError="false" enabled="true" name="GetApp">
+    <DisplayName>GetAppProfile</DisplayName>
+    <EntityType value="apiproduct"></EntityType>
+    <EntityIdentifier ref="developer.app.name" type="appname"/> 
+    <SecondaryIdentifier ref="developer.id" type="developerid"/> 
+</AccessEntity>
+
+<!-- Retrieves entity profiles you specify from the Apigee Edge data store. 
+The policy places the profile in a variable whose name follows the format AccessEntity.{policy_name}.
+ You can use AccessEntity to access profiles for the following entities:
+
+App
+API product
+Company
+Company developer
+Consumer key
+Developer -->

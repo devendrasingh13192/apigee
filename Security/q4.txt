@@ -1,0 +1,28 @@
+Describe your approach to implementing mutual TLS (mTLS) in Apigee. explain in very brief
+
+### **mTLS in Apigee (Brief)**  
+
+1. **Upload Certificates**  
+   - Add **client CA certs** to Apigee's truststore (via Admin API or UI).  
+
+2. **Enable mTLS in TargetEndpoint**  
+   ```xml  
+   <SSLInfo>  
+       <Enabled>true</Enabled>  
+       <ClientAuthEnabled>true</ClientAuthEnabled>  
+       <TrustStore>ref://my-truststore</TrustStore>  
+   </SSLInfo>  
+   ```  
+
+3. **Validate Client Cert**  
+   - Use **`VerifyJWT`** or **`JavaScript`** to check cert metadata (e.g., CN/SAN).  
+
+4. **Revocation Checks** (Optional)  
+   - Validate certs against a **CRL/OCSP** endpoint.  
+
+5. **Monitor & Rotate Certs**  
+   - Track expiring certs; automate rotations.  
+
+**Result**: **Strict client authentication** with end-to-end encryption. 🔐  
+
+Need steps for hybrid/Apigee X?

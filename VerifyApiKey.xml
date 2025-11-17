@@ -1,0 +1,12 @@
+<VerifyAPIKey name="APIKeyVerifier">
+    <APIKey ref="request.queryparam.apikey" />
+</VerifyAPIKey>
+
+<VerifyAPIKey name="APIKeyVerifier">
+    <APIKey ref="request.header.x-apikey" />
+</VerifyAPIKey>
+
+<VerifyAPIKey name="APIKeyVerifier">
+    <APIKey ref="requestAPIKey.key"/>
+</VerifyAPIKey>
+

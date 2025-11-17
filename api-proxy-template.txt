@@ -1,0 +1,187 @@
+# Ideal API Proxy Design
+
+## **Proxy Structure**
+```
+/apiproxy/
+├── proxies/
+│   └── default.xml
+├── targets/
+│   └── default.xml
+├── policies/
+│   ├── Security-Policies/
+│   ├── Transformation-Policies/
+│   ├── RateLimit-Policies/
+│   └── Error-Policies/
+└── resources/
+    └── java/
+```
+
+## **1. Proxy Endpoint (`proxies/default.xml`)**
+```xml
+<ProxyEndpoint name="default">
+  <PreFlow>
+    <Request>
+      <Step><Name>SpikeArrest</Name></Step>
+      <Step><Name>VerifyAPIKey</Name></Step>
+      <Step><Name>Quota</Name></Step>
+    </Request>
+  </PreFlow>
+  <Flows>
+    <Flow name="main-flow">
+      <Request>
+        <Step><Name>JSONToXML</Name></Step>
+        <Step><Name>AddAuthHeader</Name></Step>
+        <Step><Name>LogRequest</Name></Step>
+      </Request>
+      <Response>
+        <Step><Name>XMLToJSON</Name></Step>
+        <Step><Name>ErrorHandling</Name></Step>
+      </Response>
+    </Flow>
+  </Flows>
+  <PostFlow>
+    <Response>
+      <Step><Name>LogResponse</Name></Step>
+    </Response>
+  </PostFlow>
+</ProxyEndpoint>
+```
+
+## **2. Security Policies**
+
+**API Key Verification (`VerifyAPIKey.xml`):**
+```xml
+<VerifyAPIKey async="false" continueOnError="false" enabled="true" name="VerifyAPIKey">
+  <APIKey ref="request.queryparam.apikey"/>
+</VerifyAPIKey>
+```
+
+**Spike Arrest (`SpikeArrest.xml`):**
+```xml
+<SpikeArrest async="false" continueOnError="false" enabled="true" name="SpikeArrest">
+  <Rate>100ps</Rate>
+  <UseEffectiveCount>true</UseEffectiveCount>
+</SpikeArrest>
+```
+
+**Quota (`Quota.xml`):**
+```xml
+<Quota async="false" continueOnError="false" enabled="true" name="Quota">
+  <Allow count="1000"/>
+  <Interval>1</Interval>
+  <TimeUnit>month</TimeUnit>
+  <Identifier ref="client_id"/>
+</Quota>
+```
+
+## **3. Transformation Policies**
+
+**JSON to XML (`JSONToXML.xml`):**
+```xml
+<JSONToXML async="false" continueOnError="false" enabled="true" name="JSONToXML">
+  <Options>
+    <TargetNamespace>http://example.com/api</TargetNamespace>
+  </Options>
+  <Source>request</Source>
+  <OutputVariable>request</OutputVariable>
+</JSONToXML>
+```
+
+**XML to JSON (`XMLToJSON.xml`):**
+```xml
+<XMLToJSON async="false" continueOnError="false" enabled="true" name="XMLToJSON">
+  <Options>
+    <TextNodeName>text</TextNodeName>
+  </Options>
+  <Source>response</Source>
+  <OutputVariable>response</OutputVariable>
+</XMLToJSON>
+```
+
+## **4. Service Callout (`ServiceCallout.xml`)**
+```xml
+<ServiceCallout async="false" continueOnError="false" enabled="true" name="ServiceCallout">
+  <Request clearPayload="false" variable="serviceCalloutRequest">
+    <Set>
+      <Headers>
+        <Header name="Authorization">Bearer {private.security.token}</Header>
+      </Headers>
+    </Set>
+  </Request>
+  <Response>serviceCalloutResponse</Response>
+  <HTTPTargetConnection>
+    <URL>https://auth-service.com/validate</URL>
+  </HTTPTargetConnection>
+</ServiceCallout>
+```
+
+## **5. Error Handling (`ErrorHandling.xml`)**
+```xml
+<FaultRules>
+  <FaultRule name="ErrorHandling">
+    <Condition>(fault.name = "QuotaViolation")</Condition>
+    <Step>
+      <Name>RaiseFault-Quota</Name>
+    </Step>
+  </FaultRule>
+</FaultRules>
+```
+
+**Raise Fault Policy (`RaiseFault-Quota.xml`):**
+```xml
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault-Quota">
+  <FaultResponse>
+    <Set>
+      <Payload contentType="application/json">
+        {"error": "Quota exceeded", "code": "429"}
+      </Payload>
+      <StatusCode>429</StatusCode>
+    </Set>
+  </FaultResponse>
+</RaiseFault>
+```
+
+## **6. Target Endpoint (`targets/default.xml`)**
+```xml
+<TargetEndpoint name="default">
+  <PreFlow>
+    <Request/>
+    <Response/>
+  </PreFlow>
+  <Flows/>
+  <PostFlow>
+    <Request/>
+    <Response/>
+  </PostFlow>
+  <HTTPTargetConnection>
+    <URL>https://backend-service.com/api</URL>
+    <Properties>
+      <Property name="success.codes">2xx,3xx</Property>
+    </Properties>
+  </HTTPTargetConnection>
+</TargetEndpoint>
+```
+
+## **7. JavaScript for Custom Logic (`custom-logic.js`)**
+```javascript
+// Custom header transformation
+var authHeader = context.getVariable('request.header.Authorization');
+if (authHeader) {
+    context.setVariable('backend.auth.header', 'Basic ' + btoa(authHeader));
+}
+
+// Request validation
+var payload = context.getVariable('request.content');
+if (!payload || payload === '') {
+    context.setVariable('error.message', 'Empty request body');
+    context.setVariable('error.code', '400');
+}
+```
+
+This design provides:
+- **Security**: API Key + Rate Limiting
+- **Transformation**: JSON ↔ XML
+- **Extensibility**: Service Callouts
+- **Protection**: Spike Arrest & Quota
+- **Reliability**: Comprehensive Error Handling
+- **Monitoring**: Request/Response Logging

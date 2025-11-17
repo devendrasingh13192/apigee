@@ -1,0 +1,57 @@
+**Exactly! You've nailed the key takeaway.**
+
+That's correct - **there are no code-level changes required** for your API proxies and policies when migrating from Apigee Edge/Hybrid to Apigee X.
+
+## The Core Policy Engine is Identical
+
+The actual **policy XML configuration, JavaScript code, and API proxy definitions** remain 100% compatible. What changes is the **operational context and integration patterns** around those policies.
+
+### What Stays Exactly the Same:
+- ✅ **Policy XML syntax** - All your `TargetEndpoint`, `ProxyEndpoint`, `Policies` configurations
+- ✅ **JavaScript code** - Your custom `JavaScript` policy code, npm modules, logic
+- ✅ **Conditional flows** - All your `RouteRule`, `Step`, `Condition` configurations  
+- ✅ **Variable handling** - `AssignMessage`, `ExtractVariables`, `Set` policies work identically
+- ✅ **Basic policy execution** - `ServiceCallout`, `OAuthV2`, `VerifyAPIKey`, etc.
+
+### What Changes (The Context):
+- **WHERE** secrets are stored (KVM → Secret Manager)
+- **HOW** you connect to backends (Public/VPN → Private Service Connect)  
+- **WHAT** security services you use (Custom WAF → Cloud Armor)
+- **HOW** you monitor (Apigee Analytics → Cloud Operations Suite)
+
+## Practical Example - Same Policy, Different Backend Connectivity
+
+**Your Policy XML doesn't change:**
+```xml
+<!-- This identical ServiceCallout policy works in both Edge and X -->
+<ServiceCallout name="SC-GetUserData">
+  <Request>
+    <Set>
+      <Payload contentType="application/json">{"userId": "{request.queryparam.id}"}</Payload>
+    </Set>
+  </Request>
+  <Response>calloutResponse</Response>
+  <HTTPTargetConnection>
+    <URL>https://user-service.internal/api/users</URL>
+  </HTTPTargetConnection>
+</ServiceCallout>
+```
+
+**What changes is the infrastructure:**
+- **Edge:** `user-service.internal` resolves via DNS to a public IP or VPN endpoint
+- **Apigee X:** `user-service.internal` resolves via Private Service Connect to a private Google Cloud service
+
+## Migration Reality
+
+This is why migrations from Edge/Hybrid to X are primarily **infrastructure and configuration changes**, not development rewrites:
+
+1. **Export** your API proxies, shared flows, and policies from Edge
+2. **Import** them directly into Apigee X  
+3. **Reconfigure** the surrounding infrastructure (networking, security, monitoring)
+4. **Update** integration points to use Google Cloud services
+
+## The Bottom Line
+
+Your investment in **API proxy development, policy logic, and business rules is preserved**. The migration is about **lifting your existing API proxies and dropping them into a more powerful, cloud-native operational platform**.
+
+This compatibility is by design - Google wants to make the transition from Edge/Hybrid to X as seamless as possible for existing Apigee customers.

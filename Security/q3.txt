@@ -1,0 +1,26 @@
+How would you protect against DDoS attacks using Apigee? explain in very brief
+
+### **DDoS Protection in Apigee (Brief)**  
+
+1. **Rate Limiting**  
+   - Enforce **strict quotas** (`Quota` policy) per IP/API key.  
+   - Use **spike arrest** (`SpikeArrest` policy) to limit sudden traffic bursts.  
+
+2. **Bot Detection**  
+   - Block suspicious requests with **`JavaScript`/`RegularExpressionProtection`** (e.g., bad user-agents).  
+
+3. **Caching**  
+   - Cache responses (`PopulateCache`) to reduce backend load.  
+
+4. **IP Blacklisting**  
+   - Use **`VerifyAPIKey` + KVM** to block malicious IPs.  
+
+5. **Scale Automatically**  
+   - Apigee X auto-scales; **enable Cloud Armor** (GCP) for L7 protection.  
+
+6. **Monitor & Alert**  
+   - Set up **analytics alerts** for abnormal traffic patterns.  
+
+**Result**: **Throttle, block, and absorb attacks** without downtime. 🛡️🚀  
+
+Need config snippets?

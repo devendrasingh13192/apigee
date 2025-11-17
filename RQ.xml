@@ -1,0 +1,34 @@
+<ResetQuota name="resetQuota">
+   <Quota name="MyQuotaPolicy">
+      <Identifier name="_default">
+         <Allow>100</Allow>
+      </Identifier>
+   </Quota>
+</ResetQuota>
+
+
+<ResetQuota name="resetQuota">
+   <Quota ref="request.header.quotapolicy">
+      <Identifier name="_default">
+         <Allow ref="request.header.allowquota" />
+      </Identifier>
+   </Quota>
+</ResetQuota>
+
+<ResetQuota name="resetQuota">
+   <Quota name="QuotaPolicy">
+      <Identifier ref="request.header.clientId">
+         <Allow>100</Allow>
+      </Identifier>
+   </Quota>
+</ResetQuota>
+
+<ResetQuota async="false" continueOnError="false" enabled="true" name="Reset-Quota-1">
+   <DisplayName>Reset Quota 1</DisplayName>
+   <Quota name="quotaName" ref="request.header.quotapolicy">
+      <Identifier name="identifierName" ref="request.header.identifier">
+         <Class ref="request.header.classIdentifier" />
+         <Allow>100</Allow>
+      </Identifier>
+   </Quota>
+</ResetQuota>

@@ -1,0 +1,4 @@
+<DecodeJWT name="JWT-Decode-HS256">
+    <DisplayName>JWT Verify HS256</DisplayName>
+    <Source>var.jwt</Source>
+</DecodeJWT>

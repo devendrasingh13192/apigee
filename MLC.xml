@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MonetizationLimitsCheck async="false" continueOnError="false" enabled="true" name="Monetization-Limits-Check">
+    <DisplayName>Monetization Limits Check</DisplayName>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <Variables>
+        <Product>myproductvar.name</Product>
+    </Variables>
+	<FaultResponse>
+	        <Set>
+	            <Payload contentType="text/xml">
+	                <error>
+	                    <messages>
+	                        <message>Developer has reached usage quota</message>
+	                        <message>Is Developer Suspended - {monetizationLimits.isDeveloperSuspended} </message>
+	                    </messages>
+	                </error>
+	            </Payload>
+	            <StatusCode>403</StatusCode>
+	            <ReasonPhrase>Forbidden</ReasonPhrase>
+	        </Set>
+	</FaultResponse>
+ </MonetizationLimitsCheck>

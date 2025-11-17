@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<FlowCallout async="false" continueOnError="false" enabled="true" name="String-Handler">
+  <DisplayName>String Handler</DisplayName>
+  <Parameters>
+    <Parameter name="input">Gladys Kravitz</Parameter>
+    <Parameter name="operations">concatenate tolowercase</Parameter>
+    <Parameter name="outputVariable">string.handler.output</Parameter>
+  </Parameters>
+  <SharedFlowBundle>StringHandler</SharedFlowBundle>
+</FlowCallout>
+
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SharedFlow name="default">
+  <Step>
+    <Name>SharedStringFunctions</Name>
+  </Step>
+</SharedFlow>
+
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Javascript async="false" continueOnError="false" enabled="true" timeLimit="200" name="SharedStringFunctions">
+  <DisplayName>SharedStringFunctions</DisplayName> <Properties/>
+  <ResourceURL>jsc://SharedStringFunctions.js</ResourceURL>
+</Javascript>
+
+
+// Input value from the calling API proxy.
+var handledString = context.getVariable("input");
+// Variable to use for output from this script.
+var outputVariable = context.getVariable("outputVariable");
+// A space-separated list of things to do to the input string.
+// Convert to lower case to handle unintentional capitals in configuration.
+var operation = context.getVariable("operations").toLowerCase();
+
+// If "lowercase" was given as an operation, convert the input to lowercase.
+if (operation.includes("tolowercase")) {
+    handledString = handledString.toLowerCase();
+}
+
+// If "concatenate" was given as an operation, concatenate the input.
+if (operation.includes("concatenate")) {
+    handledString = handledString.replace(/\s+/g, '');
+}
+// Assign the resulting string to the output variable specified by
+// the calling API proxy.
+context.setVariable(outputVariable, handledString);

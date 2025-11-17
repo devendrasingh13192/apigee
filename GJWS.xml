@@ -1,0 +1,32 @@
+<!-- Generates a signed JWS, with a configurable set of claims. The JWS can then be returned to clients, transmitted to backend targets, 
+or used in other ways -->
+
+header.payload.signature
+
+<GenerateJWS name="JWS-Generate-HS256">
+    <DisplayName>JWS Generate HS256</DisplayName>
+    <Algorithm>HS256</Algorithm>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <SecretKey>
+        <Value ref="private.secretkey"/>
+        <Id>1918290</Id>    
+    </SecretKey>
+    <Payload ref="private.payload" />
+    <OutputVariable>jws-variable</OutputVariable>
+</GenerateJWS>
+
+header..signature
+
+<GenerateJWS name="JWS-Generate-RS256">
+    <DisplayName>JWS Generate RS256</DisplayName>
+    <Algorithm>RS256</Algorithm>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <PrivateKey>
+        <Value ref="private.privatekey"/>
+        <Password ref="private.privatekey-password"/>
+        <Id ref="private.privatekey-id"/>
+    </PrivateKey>
+    <Payload ref="private.payload" />
+    <DetachContent>true</DetachContent>
+    <OutputVariable>jws-variable</OutputVariable>
+</GenerateJWS>

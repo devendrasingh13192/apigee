@@ -1,0 +1,60 @@
+# Routing to Multiple Backends in Apigee
+
+Apigee provides several ways to route requests to multiple backend services. Here are the main approaches:
+
+## 1. **Target Servers with Load Balancing**
+   - Define multiple target servers in an environment
+   - Apigee can load balance between them (round-robin by default)
+   - Configure in `TargetEndpoint`:
+     ```xml
+     <HTTPTargetConnection>
+       <LoadBalancer>
+         <Server name="backend1"/>
+         <Server name="backend2"/>
+       </LoadBalancer>
+       <Path>/api</Path>
+     </HTTPTargetConnection>
+     ```
+
+## 2. **Route Rules with Conditions**
+   - Use conditional flows in the proxy to route to different backends
+   - Example in `ProxyEndpoint`:
+     ```xml
+     <RouteRule name="RouteToBackend1">
+       <Condition>request.verb = "GET"</Condition>
+       <TargetEndpoint>backend1</TargetEndpoint>
+     </RouteRule>
+     <RouteRule name="RouteToBackend2">
+       <Condition>request.verb = "POST"</Condition>
+       <TargetEndpoint>backend2</TargetEndpoint>
+     </RouteRule>
+     ```
+
+## 3. **Dynamic Routing with JavaScript**
+   - Use JavaScript policies to determine routing dynamically:
+     ```javascript
+     var backend = context.getVariable("request.queryparam.backend");
+     context.setVariable("target.url", "https://" + backend + ".example.com/api");
+     ```
+
+## 4. **Service Callout for Backend Selection**
+   - Make a callout to a decision service that returns which backend to use
+   - Then route to the selected backend
+
+## 5. **Environment-Based Routing**
+   - Route to different backends based on the environment (prod vs test)
+   - Configure different target endpoints for each environment
+
+## 6. **Header/Content-Based Routing**
+   - Inspect headers or payload content to determine routing:
+     ```xml
+     <RouteRule name="RouteByHeader">
+       <Condition>request.header.content-type = "application/xml"</Condition>
+       <TargetEndpoint>xml-backend</TargetEndpoint>
+     </RouteRule>
+     ```
+
+## 7. **Weighted Routing**
+   - Use the Traffic Management feature to distribute traffic by percentage
+
+The best approach depends on your specific requirements for routing logic, traffic distribution, and backend capabilities.

@@ -1,0 +1,24 @@
+<KeyValueMapOperations async="false" continueOnError="false" enabled="true" name="FooKVM" mapIdentifier="FooKVM">
+  <DisplayName>FooKVM</DisplayName>
+  <ExpiryTimeInSecs>86400</ExpiryTimeInSecs>
+  <Scope>environment</Scope>
+  <Put>
+    <Key>
+      <Parameter>FooKey_1</Parameter>
+    </Key>
+    <Value>foo</Value>
+    <Value>bar</Value>
+  </Put>
+  <Get assignTo="foo_variable" index="2">
+    <Key>
+      <Parameter>FooKey_1</Parameter>
+    </Key>
+  </Get>
+   <Put override="true">
+      <Key>
+         <Parameter ref="urlencoding.requesturl.hashed"/>
+      </Key>
+      <Value ref="urlencoding.longurl.encoded"/>
+      <Value ref="request.queryparam.url"/>
+   </Put>
+</KeyValueMapOperations>

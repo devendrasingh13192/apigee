@@ -1,0 +1,60 @@
+<!-- Generates a custom message in response to an error condition. Use RaiseFault to define a fault response that is returned to the 
+requesting app when a specific condition arises. -->
+
+<RaiseFault name="404">
+ <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+ <FaultResponse>
+   <Set>
+     <StatusCode>404</StatusCode>
+     <ReasonPhrase>The resource requested was not found</ReasonPhrase>
+   </Set>
+ </FaultResponse>
+</RaiseFault>
+
+
+<RaiseFault name="ExceptionHandler">
+ <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+ <FaultResponse>
+   <Set>
+     <Payload contentType="text/xml">
+       <root>Please contact support@company.com</root>
+     </Payload>
+     <StatusCode>{response.status.code}</StatusCode>
+     <ReasonPhrase>Server error</ReasonPhrase>
+   </Set>
+   <Add>
+     <Headers>
+       <Header name="FaultHeader">{fault.name}</Header>
+     </Headers>
+   </Add>
+ </FaultResponse>
+</RaiseFault>
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RaiseFault async="false" continueOnError="false" enabled="true" name="Raise-Fault-1">
+    <DisplayName>RaiseFault 1</DisplayName>
+    <FaultResponse>
+        <AssignVariable>
+          <Name/>
+          <Value/>
+        </AssignVariable>
+        <Add>
+            <Headers/>
+        </Add>
+        <Copy source="request">
+            <Headers/>
+            <StatusCode/>
+            <ReasonPhrase/>
+        </Copy>
+        <Remove>
+            <Headers/>
+        </Remove>
+        <Set>
+            <Headers/>
+            <Payload/>
+            <ReasonPhrase/>
+            <StatusCode/>
+        </Set>
+    </FaultResponse>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>

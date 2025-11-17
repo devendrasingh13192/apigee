@@ -1,0 +1,27 @@
+Explain JWT validation best practices in Apigee in very brief
+
+### **JWT Validation Best Practices in Apigee (Brief)**  
+
+1. **Use Apigee’s `VerifyJWT` Policy**  
+   - Validate signatures, expiry (`exp`), issuer (`iss`), and audience (`aud`).  
+
+2. **Secure Key Management**  
+   - Fetch public keys from a **trusted JWKS endpoint** (not hardcoded).  
+   - Cache keys to avoid frequent network calls.  
+
+3. **Mandatory Claims**  
+   - Enforce critical claims: `iss`, `aud`, `sub`, `iat`, `exp`.  
+   - Reject tokens with missing/invalid claims.  
+
+4. **Algorithm Enforcement**  
+   - Allow only **strong algorithms** (e.g., `RS256`, not `none`/`HS256`).  
+
+5. **Token Revocation** (Optional)  
+   - Check a **blocklist** (KVM/Redis) for revoked tokens.  
+
+6. **Log & Monitor**  
+   - Log failed validations for security audits.  
+
+**Result**: **Secure, performant JWT validation** with minimal overhead. 🔒🚀  
+
+Need a policy example?

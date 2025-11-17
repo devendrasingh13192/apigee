@@ -1,0 +1,31 @@
+How would you design an API versioning strategy using Apigee? explain in very brief
+
+### **API Versioning in Apigee (Brief)**  
+
+1. **URL Path Versioning** (Most Common)  
+   - `https://api.company.com/v1/users`  
+   - `https://api.company.com/v2/users`  
+   - **Apigee Implementation**: Use **conditional routing** in proxies to direct `/v1` and `/v2` to different backend services.  
+
+2. **Header/Media Type Versioning**  
+   - `Accept: application/vnd.company.v1+json`  
+   - **Apigee Implementation**: Use **`AssignMessage`** policy to read headers and route requests.  
+
+3. **Query Parameter Versioning**  
+   - `https://api.company.com/users?version=1`  
+   - **Apigee Implementation**: Extract `request.queryparam.version` and route accordingly.  
+
+4. **Deprecation & Sunset Policy**  
+   - Use **`RaiseFault`** for deprecated APIs with `Deprecation: true` header.  
+   - Log usage of old versions in **Apigee Analytics**.  
+
+5. **Default Routing**  
+   - Latest version (`/v2`) serves as default if no version specified.  
+
+**Key Apigee Features**:  
+- **Proxy Chaining** (reuse shared logic across versions).  
+- **Traffic Management** (phase out old versions gradually).  
+
+**Result**: Clean, scalable versioning with zero breaking changes! 🚀  
+
+Need a specific example?

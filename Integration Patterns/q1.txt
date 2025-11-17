@@ -1,0 +1,25 @@
+How would you implement an API composition pattern in Apigee? explain in very brief
+
+
+### **API Composition in Apigee (Brief)**  
+
+1. **Aggregate Data**  
+   - Use **`ServiceCallout`** to fetch from multiple backends.  
+
+2. **Merge Responses**  
+   - Combine JSON/XML payloads with **`JavaScript`** or **`ExtractVariables`**.  
+
+3. **Error Handling**  
+   - Partial failures? Return **cached/fallback data** for unaffected fields.  
+
+4. **Cache & Optimize**  
+   - Cache sub-requests (**`PopulateCache`**) to reduce latency.  
+
+**Example Flow**:  
+1. Call **User Service** (profile).  
+2. Call **Order Service** (history).  
+3. Merge responses → **single enriched API response**.  
+
+**Result**: **Efficient, unified APIs!** 🚀  
+
+Need a policy snippet?

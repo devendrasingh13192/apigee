@@ -1,0 +1,28 @@
+What strategies would you use to reduce latency in Apigee API calls? explain in very brief
+
+### **Reducing Latency in Apigee (Brief)**  
+
+1. **Edge Caching**  
+   - Use **`ResponseCache`** to store frequent responses.  
+   - Set optimal **`Cache-Control`** headers (e.g., `max-age=300`).  
+
+2. **Minimize Policy Execution**  
+   - Avoid unnecessary policies (e.g., **conditional checks**).  
+   - Use **`FaultRules`** to skip post-error processing.  
+
+3. **Optimize Backend Calls**  
+   - **Compress payloads** (GZIP).  
+   - **Batch requests** (merge multiple calls into one).  
+
+4. **Geographic Distribution**  
+   - Deploy **Apigee instances closer to users** (e.g., multi-region in Apigee X).  
+
+5. **Async Processing**  
+   - Use **`ServiceCallout` with `Async=true`** for non-critical tasks.  
+
+6. **Pre-fetch & Warm-Up**  
+   - Warm caches during off-peak hours.  
+
+**Result**: **Faster APIs, happier users!** ⚡  
+
+Need policy snippets? 

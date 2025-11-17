@@ -1,0 +1,25 @@
+Explain your Apigee CI/CD pipeline implementation in very brief
+
+### **Apigee CI/CD Pipeline (Brief)**  
+
+1. **Version Control**  
+   - Store proxies/shared flows in **Git** (e.g., GitHub/GitLab).  
+
+2. **Automated Testing**  
+   - **Unit Tests**: API Mock + Postman/Newman.  
+   - **Integration Tests**: Deploy to **Dev** & validate.  
+
+3. **Deployment**  
+   - **Apigee CLI** (`apigeecli`) or **Maven Plugin** to promote across envs (Dev → Prod).  
+   - **Terraform** for infra-as-code (policies, KVMs).  
+
+4. **Approval Gates**  
+   - Manual approval for **Prod** (optional).  
+
+5. **Rollback**  
+   - Revert via **Git tags** or Apigee revisions.  
+
+**Tools**: **Jenkins/GitHub Actions + Apigee APIs**.  
+**Result**: **Zero-downtime, auditable deployments!** 🚀  
+
+Need a pipeline snippet?

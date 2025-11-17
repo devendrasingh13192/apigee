@@ -1,0 +1,19 @@
+<!-- Enables you to use Java to implement custom behavior that is not included out-of-the-box by Apigee policies.
+In your Java code, you can access message properties (headers, query parameters, content) and flow variables 
+in the proxy flow. -->
+<JavaCallout async="false" continueOnError="false" enabled="true" name="JavaCallout">
+    <DisplayName>JavaCallout</DisplayName>
+    <ClassName>com.example.mypolicy.MyJavaCallout</ClassName>
+    <ResourceURL>java://MyJavaCallout.jar</ResourceURL>
+    <Properties>
+        <Property name="source">response.status.code</Property>
+    </Properties>
+</Javascript>
+
+<!-- public class MyJavaCallout implements Execution{
+    public MyJavaCallout(Map<string, string> props){
+        
+            // Extract property values from map.
+    }
+    ...
+} -->

@@ -1,0 +1,111 @@
+<!-- The AssignMessage policy changes or creates new request and response messages during the API proxy Flow. 
+The policy lets you perform the following actions on those messages:
+
+Add new form parameters, headers, or query parameters to a message
+Copy existing properties from one message to another
+Remove headers, query parameters, form parameters, and/or message payloads from a message
+Set the value of existing properties in a message -->
+
+<AssignMessage
+    continueOnError="[false|true]"
+    enabled="[true|false]"
+    name="policy_name" >
+  <!-- All AssignMessage child elements are optional -->
+  <Add>
+    <FormParams>
+      <FormParam name="formparam_name">formparam_value</FormParam>
+      ...
+    </FormParams>
+    <Headers>
+      <Header name="header_name">header_value</Header>
+      ...
+    </Headers>
+    <QueryParams>
+      <QueryParam name="queryparam_name">queryparam_value</QueryParam>
+      ...
+    </QueryParams>
+  </Add>
+
+  <AssignTo createNew="[true|false]" transport="http"
+    type="[request|response]">destination_variable_name</AssignTo>
+
+  <AssignVariable>
+    <Name>variable_name</Name>
+    <Ref>source_variable</Ref>
+    <Template>message_template</Template>
+    or
+    <Template ref='template_variable'></Template>
+    <Value>variable_value</Value>
+  </AssignVariable>
+
+  <Copy source="[request|response]">
+    <!-- Can also be an empty array (<FormParams/>) -->
+    <FormParams>
+      <FormParam name="formparam_name">formparam_value</FormParam>
+      ...
+    </FormParams>
+    <!-- Can also be an empty array (<Headers/>) -->
+    <Headers>
+      <Header name="header_name">header_value</Header>
+      ...
+    </Headers>
+    <Path>[false|true]</Path>
+    <Payload>[false|true]</Payload>
+    <!-- Can also be an empty array (<QueryParams/>) -->
+    <QueryParams>
+      <QueryParam name="queryparam_name">queryparam_value</QueryParam>
+      ...
+    </QueryParams>
+    <ReasonPhrase>[false|true]</ReasonPhrase>
+    <StatusCode>[false|true]</StatusCode>
+    <Verb>[false|true]</Verb>
+    <Version>[false|true]</Version>
+  </Copy>
+
+  <DisplayName>policy_display_name</DisplayName>
+
+  <IgnoreUnresolvedVariables>[true|false]
+  </IgnoreUnresolvedVariables>
+
+  <Remove>
+    <!-- Can also be an empty array (<FormParams/>) -->
+    <FormParams>
+      <FormParam name="formparam_name">formparam_value</FormParam>
+      ...
+    </FormParams>
+    <!-- Can also be an empty array (<Headers/>) -->
+    <Headers>
+      <Header name="header_name">header_value</Header>
+      ...
+    </Headers>
+    <Payload>[false|true]</Payload>
+    <!-- Can also be an empty array (<QueryParams/>) -->
+    <QueryParams>
+      <QueryParam name="queryparam_name">queryparam_value</QueryParam>
+      ...
+    </QueryParams>
+  </Remove>
+
+  <Set>
+    <FormParams>
+      <FormParam name="formparam_name">formparam_value</FormParam>
+      ...
+    </FormParams>
+    <Headers>
+      <Header name="header_name">header_value</Header>
+      ...
+    </Headers>
+    <Path>path</Path>
+    <Payload contentType="content_type" variablePrefix="prefix"
+        variableSuffix="suffix">new_payload</Payload>
+    <QueryParams>
+      <QueryParam name="queryparam_name">queryparam_value</QueryParam>
+      ...
+    </QueryParams>
+    <ReasonPhrase>reason_for_error or {variable}</ReasonPhrase>
+    <StatusCode>HTTP_status_code or {variable}</StatusCode>
+    <Verb>[GET|POST|PUT|PATCH|DELETE|{variable}]</Verb>
+    <Version>[1.0|1.1|{variable}]</Verb>
+  </Set>
+
+</AssignMessage>

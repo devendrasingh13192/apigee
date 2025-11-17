@@ -1,0 +1,21 @@
+# Access Token vs Refresh Token
+
+## **Access Token**
+- **Short-lived** (minutes/hours)
+- Used to **access protected resources** 
+- Sent with every API request
+- **Bearer:** `Authorization: Bearer <access_token>`
+
+## **Refresh Token**
+- **Long-lived** (days/months)
+- Used to **get new access tokens**
+- Securely stored, not sent with API calls
+- **Prevents frequent re-login**
+
+## **Simple Flow:**
+1. Use **access token** until expired
+2. Use **refresh token** to get new access token
+3. Continue without user re-authentication
+
+**Access Token = Hotel Room Key** (short-term access)  
+**Refresh Token = ID Card** (proves identity to get new key)

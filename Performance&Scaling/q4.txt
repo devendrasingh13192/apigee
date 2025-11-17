@@ -1,0 +1,29 @@
+Explain Apigee caching strategies and when to use each type in very brief
+
+### **Apigee Caching Strategies (Brief)**  
+
+1. **Response Cache** (`ResponseCache`)  
+   - **What**: Stores full API responses.  
+   - **When**: Use for **static data** (e.g., product catalogs, reference data).  
+
+2. **Populate & Lookup Cache** (`PopulateCache` + `LookupCache`)  
+   - **What**: Key-value store for custom data (e.g., tokens, DB results).  
+   - **When**: Cache **dynamic but reusable data** (e.g., user profiles).  
+
+3. **Browser/Client Cache** (`Cache-Control` Headers)  
+   - **What**: Lets clients/browsers cache responses.  
+   - **When**: Public **static assets** (e.g., images, JS/CSS).  
+
+4. **Edge Caching** (Apigee’s Built-In CDN)  
+   - **What**: Caches at Apigee’s global edges.  
+   - **When**: High-traffic **read-only APIs** (e.g., weather data).  
+
+5. **Invalidation Strategies**  
+   - **Time-based**: `max-age=300` (for time-sensitive data).  
+   - **Event-based**: Clear cache via API on data changes.  
+
+**Choose Based On**:  
+- **Data volatility** (static vs. dynamic).  
+- **Latency needs** (edge vs. backend calls).  
+
+**Result**: **Faster APIs, lower backend load!** ⚡

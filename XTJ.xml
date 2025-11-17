@@ -1,0 +1,54 @@
+<XMLToJSON name="ConvertToJSON">
+  <Options>
+  </Options>
+  <OutputVariable>response</OutputVariable>
+  <Source>response</Source>
+</XMLToJSON>
+
+<XMLToJSON async="false" continueOnError="false" enabled="true" name="XML-to-JSON-1">
+    <DisplayName>XML to JSON 1</DisplayName>
+    <Source>response</Source>
+    <OutputVariable>response</OutputVariable>
+    <Options>
+        <RecognizeNumber>true</RecognizeNumber>
+        <!--  <a>
+            <b>100</b>
+            <c>value</c>
+            </a>
+
+            {
+    "a": {
+        "b": 100,
+        "c": "value"
+    }
+}
+
+if false
+  a": {
+        "b": '100',
+        "c": "value"
+    }
+}
+
+-->
+      
+        <RecognizeBoolean>true</RecognizeBoolean> //true to true if false true to "true"
+        <RecognizeNull>true</RecognizeNull>
+        <NullValue>NULL</NullValue>
+        <NamespaceBlockName>#namespaces</NamespaceBlockName>
+        <DefaultNamespaceNodeName>&</DefaultNamespaceNodeName>
+        <NamespaceSeparator>***</NamespaceSeparator>
+        <TextAlwaysAsProperty>true</TextAlwaysAsProperty>
+        <TextNodeName>TEXT</TextNodeName>
+        <AttributeBlockName>FOO_BLOCK</AttributeBlockName>
+        <AttributePrefix>BAR_</AttributePrefix>
+        <OutputPrefix>PREFIX_</OutputPrefix>
+        <OutputSuffix>_SUFFIX</OutputSuffix>
+        <StripLevels>2</StripLevels>
+        <TreatAsArray>
+            <Path unwrap="true">teachers/teacher/studentnames/name</Path>
+        </TreatAsArray>
+    </Options>
+    <!-- Use Options or Format, not both -->
+    <Format>yahoo</Format>
+</XMLToJSON>

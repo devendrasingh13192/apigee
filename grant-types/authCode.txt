@@ -1,0 +1,31 @@
+# OAuth 2.0 Authorization Code Grant - Very Brief
+
+## **Flow Steps:**
+
+1. **Client** redirects user to Apigee authorization endpoint
+2. **User** authenticates and approves access
+3. **Apigee** returns authorization code to client
+4. **Client** exchanges code for access token
+5. **Apigee** returns access token + refresh token
+
+## **Apigee Policies Needed:**
+
+```xml
+<!-- 1. Generate authorization code -->
+<OAuthV2 name="GenerateAuthorizationCode">
+  <Operation>GenerateAuthorizationCode</Operation>
+</OAuthV2>
+
+<!-- 2. Generate access token -->
+<OAuthV2 name="GenerateAccessToken">
+  <Operation>GenerateAccessToken</Operation>
+</OAuthV2>
+```
+
+## **Key Features:**
+- Most secure OAuth flow
+- For web applications with server-side components
+- Requires client authentication
+- Returns both access + refresh tokens
+
+**Use Case:** Web applications that can securely store client secrets.

@@ -1,0 +1,20 @@
+<AccessControl name="ACL">
+  <IPRules noRuleMatchAction = "DENY">
+    <MatchRule action = "DENY">
+      <SourceAddress mask="24">198.51.100.1</SourceAddress>
+      <SourceAddress mask="24">192.0.2.1</SourceAddress>
+      <SourceAddress mask="24">203.0.113.1</SourceAddress>
+    </MatchRule>
+    <MatchRule action = "ALLOW">
+      <SourceAddress mask="16">198.51.100.1</SourceAddress>
+      <SourceAddress mask="16">192.0.2.1</SourceAddress>
+      <SourceAddress mask="16">203.0.113.1</SourceAddress>
+    </MatchRule>
+  </IPRules>
+</AccessControl>
+
+<!-- 
+The Access Control policy lets you allow or deny access to your APIs by specific IP addresses.
+While you can attach this policy anywhere in the API proxy flow, you'll most likely want to check 
+IP addresses at the beginning of the flow ( Request / ProxyEndpoint / PreFlow), even before authentication or quota checking. -->
+

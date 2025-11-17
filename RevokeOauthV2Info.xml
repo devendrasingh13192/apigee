@@ -1,0 +1,10 @@
+<RevokeOAuthV2 continueOnError="false" enabled="true" name="MyRevokeTokenPolicy">
+  <DisplayName>Revoke OAuth v2.0-1</DisplayName>
+  <AppId ref="request.queryparam.app_id"></AppId>
+</RevokeOAuthV2>
+
+<RevokeOAuthV2 continueOnError="false" enabled="true" name="MyRevokeTokenPolicy">
+  <DisplayName>Revoke OAuth v2.0-1</DisplayName>
+  <AppId ref="request.queryparam.app_id"></AppId>
+  <RevokeBeforeTimestamp>1561939200000</RevokeBeforeTimestamp>
+</RevokeOAuthV2>

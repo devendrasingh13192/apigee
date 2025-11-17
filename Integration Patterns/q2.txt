@@ -1,0 +1,23 @@
+Explain how to handle partial failures in a scatter-gather pattern implementation in very brief
+
+### **Handling Partial Failures in Scatter-Gather (Brief)**  
+
+1. **Timeout & Circuit Breakers**  
+   - Set short timeouts per `ServiceCallout` to avoid cascading delays.  
+
+2. **Fallback Data**  
+   - Use **cached values** or **default responses** for failed calls.  
+
+3. **Error Flagging**  
+   - Return **partial responses** with `error` fields for failed services.  
+
+4. **Async Retries**  
+   - Log failures and **retry later** (if critical).  
+
+**Key Policies**:  
+- `ServiceCallout` (scatter) + `JavaScript` (merge).  
+- `LookupCache` (fallback data).  
+
+**Result**: **Graceful degradation** when backends fail! ⚡  
+
+Need a flow example? 🚀

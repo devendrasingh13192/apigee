@@ -1,0 +1,51 @@
+<!-- The XSL Transform policy applies custom Extensible stylesheet language transformations (XSLT) to XML messages, letting you 
+transform them from XML to another format, such as XML, HTML, or plain text. The policy is often used to integrate applications 
+that support XML, but that require different XML-formats for the same data. -->
+
+<XSL name="TransformXML">
+  <ResourceURL>xsl://my_transform.xsl</ResourceURL>
+  <Source>request</Source>
+</XSL>
+
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  <xsl:output method="text"/>
+  <xsl:variable name="newline">
+  <xsl:text>
+  </xsl:text>
+  </xsl:variable>
+  <xsl:template match="/">
+  <xsl:text>&lt;Life&gt;</xsl:text>
+    <xsl:value-of select="$newline"/>
+    <xsl:text>Here are the odd-numbered items from the list:</xsl:text>
+    <xsl:value-of select="$newline"/>
+    <xsl:for-each select="list/listitem">
+      <xsl:if test="(position() mod 2) = 1">
+        <xsl:number format="1. "/>
+        <xsl:value-of select="."/>
+        <xsl:value-of select="$newline"/>
+      </xsl:if>
+    </xsl:for-each>
+  <xsl:text>&lt;/Life&gt;</xsl:text>
+</xsl:template>
+</xsl:stylesheet>
+
+<?xml version="1.0"?>
+<list>
+  <title>A few of my favorite albums</title>
+  <listitem>A Love Supreme</listitem>
+  <listitem>Beat Crazy</listitem>
+  <listitem>Here Come the Warm Jets</listitem>
+  <listitem>Kind of Blue</listitem>
+  <listitem>London Calling</listitem>
+  <listitem>Remain in Light</listitem>
+  <listitem>The Joshua Tree</listitem>
+  <listitem>The Indestructible Beat of Soweto</listitem>
+</list>
+
+<Life>
+Here are the odd-numbered items from the list:
+1. A Love Supreme
+3. Here Come the Warm Jets
+5. London Calling
+7. The Joshua Tree
+</Life>

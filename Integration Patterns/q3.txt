@@ -1,0 +1,27 @@
+Describe how you'd implement a canary release strategy in Apigee. explain in very brief
+
+
+### **Canary Releases in Apigee (Brief)**  
+
+1. **Deploy New Version**  
+   - Upload **v2 proxy** alongside **v1** (same base path).  
+
+2. **Route % Traffic**  
+   - Use **`RouteRule`** with conditions (e.g., `random() < 0.1` for 10%).  
+
+3. **Monitor Metrics**  
+   - Track **latency/errors** in Apigee Analytics.  
+
+4. **Gradual Ramp-Up**  
+   - Increase traffic (10% → 50% → 100%) if stable.  
+
+5. **Rollback**  
+   - Revert to **v1** if failures spike.  
+
+**Key Tools**:  
+- **Conditional Flows** + **Analytics**.  
+- **Load Balancer** (for weighted routing).  
+
+**Result**: **Low-risk rollouts!** 🚀  
+
+Need policy snippets?

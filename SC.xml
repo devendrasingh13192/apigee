@@ -1,0 +1,136 @@
+<!-- The Service Callout policy lets you call to another service from your API proxy flow. You can make callouts to either an external 
+service (such as an external RESTful service endpoint) or internal services (such as an API proxy in the same organization and 
+environment).
+
+In an external use case, you make a callout to a third-party API that's external to your proxy. The response from the third-party 
+API is parsed and inserted in your API's response message, enriching and "mashing up" the data for app end users. You can also make 
+a request using the Service Callout policy in the request flow, then pass the information in the response to the TargetEndpoint of the 
+API proxy.
+
+In another use case, you call a proxy that's in the same organization and environment as the one you're calling from. 
+For example, you might find this useful when you have a proxy that offers some discrete low-level functionality that 
+one or more other proxies will consume. For example, a proxy that exposes create/read/update/delete operations with a 
+backend data store could be the target proxy for multiple other proxies that expose the data to clients.
+The policy supports requests over HTTP and HTTPS. -->
+
+<LocalTargetConnection>
+    <APIProxy>data-manager</APIProxy>
+    <ProxyEndpoint>default</ProxyEndpoint>
+</LocalTargetConnection>
+
+<HTTPTargetConnection>
+    <URL>http://example.com/{request.myResourcePath}</URL>
+</HTTPTargetConnection>
+
+<ServiceCallout name="ServiceCallout-GeocodingRequest1">
+    <DisplayName>Inline request message</DisplayName>
+    <Request variable="authenticationRequest">
+      <Set>
+        <QueryParams>
+          <QueryParam name="address">{request.queryparam.postalcode}</QueryParam>
+          <QueryParam name="region">{request.queryparam.country}</QueryParam>
+          <QueryParam name="sensor">false</QueryParam>
+        </QueryParams>
+      </Set>
+    </Request>
+    <Response>GeocodingResponse</Response>
+    <Timeout>30000</Timeout>
+    <HTTPTargetConnection>
+      <URL>http://maps.googleapis.com/maps/api/geocode/json</URL>
+    </HTTPTargetConnection>
+</ServiceCallout>
+
+
+<ServiceCallout async="false" continueOnError="false" enabled="true" name="service-callout">
+    <DisplayName>service-callout</DisplayName>
+    <Properties/>
+    <Request clearPayload="true" variable="myRequest">
+        <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    </Request>
+    <Response>myResponse</Response>
+    <HTTPTargetConnection>
+        <LoadBalancer>
+            <Algorithm>RoundRobin</Algorithm>
+            <Server name="httpbin"/>
+            <Server name="yahoo"/>
+        </LoadBalancer>
+        <Path>/get</Path>
+    </HTTPTargetConnection>
+</ServiceCallout>
+
+
+<ServiceCallout async="false" continueOnError="false" enabled="true" name="Service-Callout-1">
+    <DisplayName>Custom label used in UI</DisplayName>
+    <Request clearPayload="true" variable="myRequest">
+        <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+        <Remove>
+            <ReasonPhrase/>
+            <StatusCode/>
+            <Path/>
+            <Version/>
+            <Verb/>
+         </Remove>
+         <Copy>
+            <ReasonPhrase/>
+            <StatusCode/>
+            <Path/>
+            <Version/>
+            <Verb/>
+        </Copy>
+        <Add>
+            <Headers/>
+            <QueryParams/>
+            <FormParams/>
+        </Add>
+        <Set>
+            <Headers/>
+            <QueryParams/>
+            <FormParams/>
+            <Payload/>
+            <ReasonPhrase/>
+            <StatusCode/>
+            <Path/>
+            <Version/>
+            <Verb/>
+        </Set>
+    </Request>
+    <Response>calloutResponse</Response>
+    <Timeout>30000</Timeout>
+    <HTTPTargetConnection>
+        <URL>http://example.com</URL>
+        <LoadBalancer>
+            <Algorithm>RoundRobin</Algorithm>
+            <Server name="httpbin"/>
+            <Server name="yahoo"/>
+        </LoadBalancer>
+        <SSLInfo>
+        <Enabled>true</Enabled>
+        <ClientAuthEnabled>true</ClientAuthEnabled>
+        <KeyStore>ref://mykeystoreref</KeyStore>  ## Use of a reference is recommended
+        <KeyAlias>myKey</KeyAlias>
+        <TrustStore>myTruststore</TrustStore>
+        <Ciphers/>
+        <Protocols/>
+    </SSLInfo>
+        <Properties/>
+    </HTTPTargetConnection>
+    <LocalTargetConnection>
+        <APIProxy/>
+        <ProxyEndpoint/>
+        <Path/>
+    </LocalTargetConnection>
+</ServiceCallout>
+
+
+<HTTPTargetConnection>
+    <URL>https://example.com</URL>
+    <SSLInfo>
+        <Enabled>true</Enabled>
+        <ClientAuthEnabled>true</ClientAuthEnabled>
+        <KeyStore>ref://mykeystoreref</KeyStore>  ## Use of a reference is recommended
+        <KeyAlias>myKey</KeyAlias>
+        <TrustStore>myTruststore</TrustStore>
+        <Ciphers/>
+        <Protocols/>
+    </SSLInfo>
+</HTTPTargetConnection>

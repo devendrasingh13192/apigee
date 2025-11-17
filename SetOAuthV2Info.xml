@@ -1,0 +1,6 @@
+<SetOAuthV2Info name="SetOAuthV2Info"> 
+  <AccessToken ref="request.queryparam.access_token"></AccessToken>
+  <Attributes>
+    <Attribute name="department.id" ref="request.queryparam.department_id"></Attribute>
+  </Attributes>
+</SetOAuthV2Info>

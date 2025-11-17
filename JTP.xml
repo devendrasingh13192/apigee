@@ -1,0 +1,14 @@
+<!-- Minimizes the risk posed by content-level attacks by enabling you to specify limits on various JSON structures, 
+such as arrays and strings. -->
+
+<JSONThreatProtection async="false" continueOnError="false" enabled="true" name="JSON-Threat-Protection-1">
+   <DisplayName>JSONThreatProtection 1</DisplayName>
+   <ArrayElementCount>20</ArrayElementCount> // Specifies the maximum number of elements allowed in an array.
+   <ContainerDepth>10</ContainerDepth>
+   <!-- Specifies the maximum allowed containment depth, where the containers are objects or arrays.
+    For example, an array containing an object which contains an object would result in a containment depth of 3. -->
+   <ObjectEntryCount>15</ObjectEntryCount> //Specifies the maximum number of entries allowed in an object.
+   <ObjectEntryNameLength>50</ObjectEntryNameLength> // object property name string length
+   <Source>request</Source>
+   <StringValueLength>500</StringValueLength> // string value length of string types
+</JSONThreatProtection>

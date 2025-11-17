@@ -1,0 +1,48 @@
+Inbound authentication and authorization: Validate SAML Assertion policy
+The SAML policy type enables API proxies to validate SAML assertions that are attached to inbound SOAP requests. The SAML policy 
+validates incoming messages that contain a digitally-signed SAML assertion, rejects them if they are invalid, and sets variables 
+that allow additional policies, or the backend services itself, to further validate the information in the assertion.
+
+Outbound token generation: Generate SAML Assertion policy
+The SAML policy type enables API proxies to attach SAML assertions to outbound XML requests. Those assertions are then available to 
+enable backend services to apply further security processing for authentication and authorization.
+
+
+<GenerateSAMLAssertion name="SAML" ignoreContentType="false">
+  <CanonicalizationAlgorithm />
+  <Issuer ref="reference">Issuer name</Issuer>
+  <KeyStore>
+    <Name ref="reference">keystorename</Name>
+    <Alias ref="reference">alias</Alias>
+  </KeyStore>
+  <OutputVariable>
+    <FlowVariable>assertion.content</FlowVariable>
+    <Message name="request">
+      <Namespaces>
+        <Namespace prefix="test">http://www.example.com/test</Namespace>
+      </Namespaces>
+      <XPath>/envelope/header</XPath>
+    </Message>
+  </OutputVariable>
+  <SignatureAlgorithm />
+  <Subject ref="reference">Subject name</Subject>
+  <Template ignoreUnresolvedVariables="false">
+    <!-- A lot of XML goes here, in CDATA, with {} around
+         each variable -->
+  </Template>
+</GenerateSAMLAssertion>
+
+
+<ValidateSAMLAssertion name="SAML" ignoreContentType="false">
+  <Source name="request">
+    <Namespaces>
+      <Namespace prefix='soap'>http://schemas.xmlsoap.org/soap/envelope/</Namespace>
+      <Namespace prefix='wsse'>http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd</Namespace>
+      <Namespace prefix='saml'>urn:oasis:names:tc:SAML:2.0:assertion</Namespace>
+    </Namespaces>
+    <AssertionXPath>/soap:Envelope/soap:Header/wsse:Security/saml:Assertion</AssertionXPath>
+    <SignedElementXPath>/soap:Envelope/soap:Header/wsse:Security/saml:Assertion</SignedElementXPath>
+  </Source>
+  <TrustStore>TrustStoreName</TrustStore>
+  <RemoveAssertion>false</RemoveAssertion>
+</ValidateSAMLAssertion>

@@ -1,0 +1,27 @@
+Describe your approach to designing a multi-tenant API platform in Apigee. explain this in very brief
+
+### **Multi-Tenant API Platform in Apigee (Brief)**  
+
+1. **Tenant Isolation**  
+   - Use **API Products** for access control per tenant.  
+   - Assign **custom attributes** (e.g., `tenant_id`) in API keys/OAuth tokens.  
+
+2. **Dynamic Routing**  
+   - Extract tenant ID from headers/tokens (`request.header.x-tenant-id`).  
+   - Route to tenant-specific backends using **`TargetServer`** or **conditional flows**.  
+
+3. **Shared Proxies, Tenant-Aware Policies**  
+   - Single proxy with **`JavaScript`/`AssignMessage`** to inject tenant configs.  
+   - Use **`KVM` (Key Value Maps)** to store tenant-specific settings (rate limits, URLs).  
+
+4. **Data Separation**  
+   - **Caching**: Prefix cache keys with `tenant_id`.  
+   - **Analytics**: Tag logs with tenant ID for reporting.  
+
+5. **Scalability**  
+   - **Automated onboarding** (Apigee APIs for self-service tenant setup).  
+   - **Quota Management**: Enforce limits per tenant via **`Quota` policy**.  
+
+**Result**: One platform, multiple tenants—**scalable, secure, and cost-efficient!** 🏢→🚀  
+
+Need a deep dive on any part?

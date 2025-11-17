@@ -1,0 +1,20 @@
+<Ldap name="4GLdapPolicy">
+   <LdapResource>ldap1</LdapResource>
+   <Authentication>
+       <UserName ref="request.header.username"/>
+       <Password ref="request.header.password"/>
+       <Scope>subtree</Scope>
+       <BaseDN ref="apigee.baseDN"></BaseDN> <!-- default is dc=apigee,dc=com -->
+    </Authentication>
+ </Ldap>
+
+
+ <Ldap name="LdapPolicy">
+   <LdapResource>ldap1</LdapResource>
+   <Authentication>
+       <Password ref="request.header.password"/>
+       <SearchQuery>mail={request.header.mail}</SearchQuery>
+       <Scope>subtree</Scope>
+       <BaseDN ref="apigee.baseDN"></BaseDN> <!-- default is dc=apigee,dc=com -->
+    </Authentication>
+ </Ldap>

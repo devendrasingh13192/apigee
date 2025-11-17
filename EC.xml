@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ConnectorCallout async="false" continueOnError="false" enabled="true" name="Logging-Extension">
+        <DisplayName>Logging Extension</DisplayName>
+        <Connector>cloud-extension-sample</Connector>
+        <Action>log</Action>
+        <Input>{
+                "logName" : "example-log",
+                "metadata" : "test-metadata",
+                "message" : "This is a test"
+        }</Input>
+    <Output>cloud-extension-example-log</Output>
+</ConnectorCallout>

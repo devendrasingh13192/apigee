@@ -1,0 +1,23 @@
+<!-- Configures how the cached values should be purged from the cache.
+
+This policy is intended for use in general purpose short-term caching.
+It is used in conjunction with the Populate Cache policy (for writing entries) and the Lookup Cache policy
+(for reading cache entries). -->
+
+<InvalidateCache async="false" continueOnError="false" enabled="true" name="policy-name">
+    <DisplayName>Policy Name</DisplayName>
+    <CacheKey>
+    <Prefix>UserToken</Prefix>
+    <KeyFragment>apiAccessToken</KeyFragment>
+    <KeyFragment ref="request.queryparam.client_id" />
+    </CacheKey>
+    <!-- Omit this element if you're using the included shared cache. -->
+    <CacheResource>cache_to_use</CacheResource>
+    <Scope>scope_enumeration</Scope>
+    <CacheContext>
+        <APIProxyName>application_that_added_the_entry</APIProxyName>
+        <ProxyName>proxy_for_which_data_was_cached</ProxyName>
+        <TargetName>endpoint_for_which_data_was_cached</TargetName>
+    </CacheContext>
+    <PurgeChildEntries>true_to_purge_all_child_entries</PurgeChildEntries>
+</InvalidateCache>

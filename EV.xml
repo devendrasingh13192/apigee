@@ -1,0 +1,32 @@
+<ExtractVariables async="false" continueOnError="false" enabled="true" name="Extract-Variables-1">
+   <DisplayName>Extract Variables 1</DisplayName>
+   <Source clearPayload="true|false">request</Source>
+   <VariablePrefix>myprefix</VariablePrefix>
+   <IgnoreUnresolvedVariables>true|false</IgnoreUnresolvedVariables>
+   <URIPath>
+      <Pattern ignoreCase="false">/accounts/{id}</Pattern>
+   </URIPath>
+   <QueryParam name="code">
+      <Pattern ignoreCase="true">DBN{dbncode}</Pattern>
+   </QueryParam>
+   <Header name="Authorization">
+      <Pattern ignoreCase="false">Bearer {oauthtoken}</Pattern>
+   </Header>
+   <FormParam name="greeting">
+      <Pattern>hello {user}</Pattern>
+   </FormParam>
+   <Variable name="request.content">
+       <Pattern>hello {user}</Pattern>
+   </Variable>
+   <JSONPayload>
+      <Variable name="name">
+         <JSONPath>{example}</JSONPath>
+      </Variable>
+   </JSONPayload>
+   <XMLPayload stopPayloadProcessing="false">
+      <Namespaces/>
+      <Variable name="name" type="boolean">
+         <XPath>/test/example</XPath>
+      </Variable>
+   </XMLPayload>
+</ExtractVariables>

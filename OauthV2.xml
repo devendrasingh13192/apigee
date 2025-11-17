@@ -1,0 +1,20 @@
+<OAuthV2 async="false" continueOnError="false" enabled="true" name="OAuth-v20-2">
+    <DisplayName>OAuth v2.0 2</DisplayName>
+    <Operation>VerifyAccessToken</Operation>
+    <AccessTokenPrefix>Bearer</AccessTokenPrefix> <!-- Optional, default is Bearer -->
+</OAuthV2>
+
+<OAuthV2 name="GenerateAccessToken">
+    <Operation>GenerateAccessToken</Operation>
+    <ExpiresIn>1800000</ExpiresIn>
+    <RefreshTokenExpiresIn>86400000</RefreshTokenExpiresIn>
+    <SupportedGrantTypes>
+      <GrantType>authorization_code</GrantType>
+    </SupportedGrantTypes>
+    <GenerateResponse enabled="true"/>
+</OAuthV2>
+
+RefreshAccessToken
+ValidateAccessToke
+InValidateAccessTojken
+

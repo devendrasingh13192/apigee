@@ -1,0 +1,21 @@
+<!-- The OASValidation (OpenAPI Specification Validation) policy enables you to validate an incoming request or response message 
+against an OpenAPI 3.0 Specification (JSON or YAML). -->
+
+<OASValidation name="myoaspolicy">
+   <OASResource>oas://my-spec.json</OASResource>
+   <Options>
+      <ValidateMessageBody>true</ValidateMessageBody>
+   </Options>
+   <Source>request</Source>
+</OASValidation>
+
+<OASValidation name="myoaspolicy">
+   <OASResource>oas://my-spec.yaml</OASResource>
+   <Options>
+      <AllowUnspecifiedParameters>
+         <Header>false</Header>
+         <Query>false</Query>
+         <Cookie>false</Cookie>
+      </AllowUnspecifiedParameters>
+   </Options>
+</OASValidation>

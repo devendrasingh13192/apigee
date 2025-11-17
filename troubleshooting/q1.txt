@@ -1,0 +1,24 @@
+How would you diagnose and resolve high latency in Apigee proxies? explain in very brief
+
+### **Diagnose & Fix High Latency in Apigee (Brief)**  
+
+1. **Identify the Layer**  
+   - **Apigee Trace Tool**: Check proxy execution time per policy.  
+   - **Analytics**: Compare `total_response_time` vs. `target_response_time`.  
+
+2. **Common Culprits & Fixes**  
+   - **Slow Backend?** → Add caching (`ResponseCache`).  
+   - **Heavy Policies?** → Optimize/remove unnecessary logic (e.g., JS).  
+   - **Network Latency?** → Use Apigee X (global load balancing).  
+   - **Large Payloads?** → Enable compression (`Accept-Encoding: gzip`).  
+
+3. **Advanced Checks**  
+   - **External Calls**: Minimize `ServiceCallout`s.  
+   - **DNS Lookups**: Cache resolved IPs.  
+
+**Quick Wins**:  
+✔ Cache static data.  
+✔ Reduce policy steps.  
+✔ Upgrade to Apigee X for lower latency.  
+
+**Result**: **Smooth, fast APIs!** ⚡

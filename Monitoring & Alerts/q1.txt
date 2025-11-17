@@ -1,0 +1,22 @@
+How would you set up custom alerts for API anomalies in Apigee? explain in very brief
+
+### **Custom Alerts for API Anomalies in Apigee (Brief)**  
+
+1. **Define Metrics**  
+   - Track **error rates**, **latency spikes**, or **unusual traffic patterns** using **Apigee Analytics**.  
+
+2. **Configure Alert Rules**  
+   - Use **Apigee Webhooks** or **GCP Cloud Monitoring** to trigger alerts when:  
+     - `5xx errors > 5%`  
+     - `avg latency > 500ms`  
+     - `traffic drops by 50%`  
+
+3. **Notification Channels**  
+   - Send alerts to **Slack/Email/PagerDuty** via **Cloud Monitoring** or **Splunk**.  
+
+4. **Automated Actions**  
+   - Trigger **Lambda/Cloud Function** to auto-remediate (e.g., scale up, block malicious IPs).  
+
+**Result**: **Proactive monitoring → faster fixes!** 🚨  
+
+Need a sample alert config? 🚀

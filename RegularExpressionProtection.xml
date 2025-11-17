@@ -1,0 +1,47 @@
+<!-- Extracts information from a message (for example, URI Path, Query Param, Header, Form Param, Variable, XML Payload, or JSON Payload
+) and evaluates that content against predefined regular expressions. If any specified regular expressions evaluate to true, the message 
+is considered a threat and is rejected. -->
+
+<RegularExpressionProtection async="false" continueOnError="false" enabled="true" name="Regular-Expression-Protection-1">
+   <DisplayName>Regular Expression Protection 1</DisplayName>
+   <Source>response</Source>
+   <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+   <URIPath>
+     <Pattern>REGEX PATTERN</Pattern>
+     <Pattern>REGEX PATTERN</Pattern>
+   </URIPath>
+   <QueryParam name="a-query-param">
+     <Pattern>REGEX PATTERN</Pattern>
+     <Pattern>REGEX PATTERN</Pattern>
+   </QueryParam>
+   <Header name="a-header">
+     <Pattern>REGEX PATTERN</Pattern>
+     <Pattern>REGEX PATTERN</Pattern>
+   </Header>
+   <FormParam name="a-form-param">
+     <Pattern>REGEX PATTERN</Pattern>
+     <Pattern>REGEX PATTERN</Pattern>
+   </FormParam>
+   <Variable name="request.content">
+     <Pattern>REGEX PATTERN</Pattern>
+     <Pattern>REGEX PATTERN</Pattern>
+   </Variable>
+   <XMLPayload>
+     <Namespaces>
+       <Namespace prefix="apigee">http://www.apigee.com</Namespace>
+     </Namespaces>
+     <XPath>
+       <Expression>/apigee:Greeting/apigee:User</Expression>
+       <Type>string</Type>
+       <Pattern>REGEX PATTERN</Pattern>
+       <Pattern>REGEX PATTERN</Pattern>
+     </XPath>
+   </XMLPayload>
+   <JSONPayload>
+     <JSONPath>
+       <Expression>$.store.book[*].author</Expression>
+       <Pattern>REGEX PATTERN</Pattern>
+       <Pattern>REGEX PATTERN</Pattern>
+     </JSONPath>
+    </JSONPayload>
+</RegularExpressionProtection>
