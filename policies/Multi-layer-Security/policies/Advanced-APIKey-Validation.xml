@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<VerifyAPIKey name="Advanced-APIKey-Validation" async="false" continueOnError="false" enabled="true">
+    <DisplayName>Advanced API Key Validation</DisplayName>
+    <APIKey ref="request.header.x-api-key"/>
+    <Scope>read write admin</Scope>
+    <Attributes>
+        <Attribute name="client_id" ref="verifyapikey.Advanced-APIKey-Validation.client_id"/>
+        <Attribute name="developer.email" ref="verifyapikey.Advanced-APIKey-Validation.developer.email"/>
+        <Attribute name="app.name" ref="verifyapikey.Advanced-APIKey-Validation.app.name"/>
+    </Attributes>
+</VerifyAPIKey>

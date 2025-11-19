@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Javascript name="Check-Suspicious-Activity">
+    <DisplayName>Check Suspicious Activity</DisplayName>
+    <ResourceURL>jsc://suspicious-activity.js</ResourceURL>
+</Javascript>

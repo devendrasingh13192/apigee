@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="MultiLayer-Security">
+    <Description>Multi-layer security implementation</Description>
+    <PreFlow name="PreFlow">
+        <Request>
+            <!-- Layer 1: Basic Security Checks -->
+            <Step>
+                <Name>Spike-Arrest-Protection</Name>
+            </Step>
+            <Step>
+                <Name>Verify-IP-Whitelist</Name>
+            </Step>
+            
+            <!-- Layer 2: Authentication -->
+            <Step>
+                <Name>KVM-GetJWK</Name>
+            </Step>
+            <Step>
+                <Name>Advanced-APIKey-Validation</Name>
+                <Condition>request.header.x-api-key != null AND request.header.authorization = null</Condition>
+            </Step>
+            <Step>
+                <Name>JWT-Validate</Name>
+                <Condition>request.header.authorization != null AND request.header.authorization.startsWith("Bearer ")</Condition>
+            </Step>
+            <Step>
+                <Name>JS-Custom-Auth</Name>
+                <Condition>request.header.authorization != null AND !request.header.authorization.startsWith("Bearer ")</Condition>
+            </Step>
+            
+            <!-- Layer 3: Threat Protection -->
+            <Step>
+                <Name>JSON-Threat-Protection</Name>
+            </Step>
+            <Step>
+                <Name>XML-Threat-Protection</Name>
+            </Step>
+            
+            <!-- Layer 4: Breach Detection -->
+            <Step>
+                <Name>Check-Suspicious-Activity</Name>
+            </Step>
+        </Request>
+        <Response/>
+    </PreFlow>
+    
+    <Flows>
+        <Flow name="MainFlow">
+            <Request>
+                <Step>
+                    <Name>Assign-Message-AddSecurityHeaders</Name>
+                </Step>
+            </Request>
+            <Response>
+                <Step>
+                    <Name>Assign-Message-RemoveInternalHeaders</Name>
+                </Step>
+            </Response>
+        </Flow>
+    </Flows>
+    
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response>
+            <!-- Security Headers -->
+            <Step>
+                <Name>Assign-Message-SecurityHeaders</Name>
+            </Step>
+            <!-- Audit Logging -->
+            <Step>
+                <Name>Message-Logging-SecurityEvents</Name>
+            </Step>
+        </Response>
+    </PostFlow>
+</ProxyEndpoint>

@@ -1,0 +1,11 @@
+<!-- /policies/security/key-value-map-operations.xml -->
+<KeyValueMapOperations name="KVM-GetJWK">
+    <DisplayName>Get JWK from KVM</DisplayName>
+    <Scope>environment</Scope>
+    <KeyValueMap>jwk-keys-map</KeyValueMap>
+    <Get assignTo="public.jwk">
+        <Key>
+            <Parameter>public-key</Parameter>
+        </Key>
+    </Get>
+</KeyValueMapOperations>

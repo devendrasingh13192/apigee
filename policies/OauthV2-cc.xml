@@ -1,0 +1,28 @@
+<OAuthV2 async="false" continueOnError="false" enabled="true" name="OAuth-v20-2">
+    <DisplayName>OAuth v2.0 2</DisplayName>
+    <Operation>VerifyAccessToken</Operation>
+    <AccessTokenPrefix>Bearer</AccessTokenPrefix> <!-- Optional, default is Bearer -->
+</OAuthV2>
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OAuthV2 name="OAUTH2-ClientCredentials">
+    <DisplayName>OAuth 2.0 Client Credentials</DisplayName>
+    <Operation>GenerateAccessToken</Operation>
+    <ExpiresIn>3600</ExpiresIn>
+    <RefreshTokenExpiresIn>86400</RefreshTokenExpiresIn>
+    <SupportedGrantTypes>
+        <GrantType>client_credentials</GrantType>
+    </SupportedGrantTypes>
+    <GrantType>request.queryparam.grant_type</GrantType>
+    <ClientId>request.queryparam.client_id</ClientId>
+    <ClientSecret>request.queryparam.client_secret</ClientSecret>
+    <GenerateResponse enabled="true"/>
+    <Attributes>
+        <Attribute name="scope" display="true" ref="request.queryparam.scope"/>
+    </Attributes>
+</OAuthV2>
+
+RefreshAccessToken
+ValidateAccessToke
+InValidateAccessTojken
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<VerifyJWT name="JWT-Validate">
+    <DisplayName>Validate JWT Token</DisplayName>
+    <Algorithm>RS256</Algorithm>
+    <Source>request.header.Authorization</Source>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <PublicKey>
+        <JWK ref="public.jwk"/>
+    </PublicKey>
+    <Issuer>https://api.yourcompany.com</Issuer>
+    <Audience>mobile-app</Audience>
+    <AdditionalClaims>
+        <Claim name="client_id" type="string">required</Claim>
+    </AdditionalClaims>
+</VerifyJWT>

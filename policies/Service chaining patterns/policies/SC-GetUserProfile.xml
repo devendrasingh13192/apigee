@@ -1,0 +1,14 @@
+<!-- /policies/service-callouts/SC-GetUserProfile.xml -->
+<ServiceCallout name="SC-GetUserProfile">
+    <Request>
+        <Set>
+            <Headers>
+                <Header name="Authorization">Bearer {jwt_token}</Header>
+            </Headers>
+            <Verb>GET</Verb>
+            <Path>/users/{request.queryparam.user_id}</Path>
+        </Set>
+    </Request>
+    <Response>user_profile_response</Response>
+    <Timeout>30000</Timeout>
+</ServiceCallout>

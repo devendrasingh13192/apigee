@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Javascript name="Verify-IP-Whitelist">
+    <DisplayName>Verify IP Whitelist</DisplayName>
+    <ResourceURL>jsc://ip-whitelist.js</ResourceURL>
+</Javascript>

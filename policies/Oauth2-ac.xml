@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OAuthV2 name="OAUTH2-AuthorizationCode">
+    <DisplayName>OAuth 2.0 Authorization Code</DisplayName>
+    <Operation>GenerateAccessToken</Operation>
+    <ExpiresIn>3600</ExpiresIn>
+    <RefreshTokenExpiresIn>2592000</RefreshTokenExpiresIn>
+    <SupportedGrantTypes>
+        <GrantType>authorization_code</GrantType>
+    </SupportedGrantTypes>
+    <GrantType>request.formparam.grant_type</GrantType>
+    <Code>request.formparam.code</Code>
+    <ClientId>request.formparam.client_id</ClientId>
+    <ClientSecret>request.formparam.client_secret</ClientSecret>
+    <RedirectUri>request.formparam.redirect_uri</RedirectUri>
+    <GenerateResponse/>
+</OAuthV2>

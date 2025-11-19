@@ -1,0 +1,13 @@
+<!-- /policies/error-handling/Custom-Fault-Mapping.xml -->
+<AssignMessage name="Custom-Fault-Mapping">
+    <AssignVariable>
+        <Name>fault.category</Name>
+        <Value>security</Value>
+        <Condition>fault.name Matches ".*Auth.*" OR fault.name Matches ".*Token.*"</Condition>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>fault.category</Name>
+        <Value>backend</Value>
+        <Condition>fault.name Matches ".*Service.*" OR fault.name Matches ".*Timeout.*"</Condition>
+    </AssignVariable>
+</AssignMessage>

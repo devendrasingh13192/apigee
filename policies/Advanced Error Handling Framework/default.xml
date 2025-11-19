@@ -1,0 +1,23 @@
+<!-- /policies/error-handling/Global-Fault-Handler.xml -->
+<FaultRules>
+    <FaultRule name="OAuth-Errors">
+        <Step>
+            <Name>FH-Handle-OAuth-Error</Name>
+        </Step>
+        <Condition>(fault.name = "InvalidAccessToken") OR (fault.name = "InvalidApiKey")</Condition>
+    </FaultRule>
+    
+    <FaultRule name="Backend-Errors">
+        <Step>
+            <Name>FH-Handle-Backend-Error</Name>
+        </Step>
+        <Condition>(fault.name = "ServiceUnavailable") OR (fault.name = "ConnectionTimeout")</Condition>
+    </FaultRule>
+    
+    <FaultRule name="System-Errors">
+        <Step>
+            <Name>FH-Handle-System-Error</Name>
+        </Step>
+        <Condition>(fault.name = "ExecutionFailed") OR (fault.name Matches ".*Error")</Condition>
+    </FaultRule>
+</FaultRules>

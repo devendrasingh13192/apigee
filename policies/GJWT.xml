@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<GenerateJWT name="JWT-Generate">
+    <DisplayName>Generate JWT Token</DisplayName>
+    <Algorithm>RS256</Algorithm>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <PrivateKey>
+        <Value ref="private.jwk"/>
+    </PrivateKey>
+    <Subject>apigee-client</Subject>
+    <Issuer>https://api.yourcompany.com</Issuer>
+    <Audience>mobile-app</Audience>
+    <ExpiresIn>3600</ExpiresIn>
+    <AdditionalClaims>
+        <Claim name="client_id" type="string">{request.queryparam.client_id}</Claim>
+        <Claim name="scope" type="string">{request.queryparam.scope}</Claim>
+        <Claim name="jti" type="string">{organization.name}-{system.uuid}</Claim>
+    </AdditionalClaims>
+    <OutputVariable>jwt_token</OutputVariable>
+</GenerateJWT>

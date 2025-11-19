@@ -1,0 +1,22 @@
+<!-- /policies/advanced/Service-Chaining.xml -->
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="Service-Chaining-Example">
+    <PreFlow>
+        <Request>
+            <!-- First service call -->
+            <Step>
+                <Name>SC-GetUserProfile</Name>
+            </Step>
+            <!-- Second service call using first response -->
+            <Step>
+                <Name>SC-GetUserOrders</Name>
+                <Condition>sc-getuserprofile.status == "success"</Condition>
+            </Step>
+            <!-- Third service call aggregating data -->
+            <Step>
+                <Name>SC-GetUserPreferences</Name>
+                <Condition>sc-getuserprofile.status == "success"</Condition>
+            </Step>
+        </Request>
+    </PreFlow>
+</ProxyEndpoint>

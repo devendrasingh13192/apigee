@@ -1,0 +1,14 @@
+<!-- /policies/security/breach-detection.xml -->
+<RaiseFault name="RAISE-Security-Breach">
+    <FaultResponse>
+        <Set>
+            <Headers>
+                <Header name="X-Security-Event">true</Header>
+            </Headers>
+            <Payload contentType="application/json">
+                {"error": "security_breach_detected", "message": "Unusual activity detected"}
+            </Payload>
+            <StatusCode>401</StatusCode>
+        </Set>
+    </FaultResponse>
+</RaiseFault>

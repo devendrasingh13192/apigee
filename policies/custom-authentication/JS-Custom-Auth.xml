@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Javascript name="JS-Custom-Auth" timeLimit="200" >
+    <DisplayName>JS-Custom-Authentication</DisplayName>
+    <Properties/>
+    <ResourceURL>jsc://custom-auth.js</ResourceURL>
+</Javascript>
