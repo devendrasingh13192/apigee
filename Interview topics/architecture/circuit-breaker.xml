@@ -1,0 +1,4 @@
+<!-- /policies/error-handling/circuit-breaker.xml -->
+<Javascript name="Circuit-Breaker">
+    <ResourceURL>jsc://circuit-breaker.js</ResourceURL>
+</Javascript>

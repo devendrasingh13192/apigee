@@ -1,0 +1,10 @@
+<!-- /policies/circuit-breaker/Circuit-Breaker-Check.xml -->
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Javascript name="Circuit-Breaker-Check" timeLimit="200">
+    <DisplayName>Circuit Breaker Check</DisplayName>
+    <Properties>
+        <Property name="target.service">backend-service</Property>
+    </Properties>
+    <ResourceURL>jsc://circuit-breaker.js</ResourceURL>
+    <IncludeURL>jsc://circuit-breaker.js</IncludeURL>
+</Javascript>

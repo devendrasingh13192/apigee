@@ -1,0 +1,49 @@
+<!-- Example usage in proxy endpoint -->
+<ProxyEndpoint name="Circuit-Breaker-Example">
+    <PreFlow>
+        <Request>
+            <!-- Check circuit breaker before calling backend -->
+            <Step>
+                <Name>Circuit-Breaker-Check</Name>
+            </Step>
+        </Request>
+    </PreFlow>
+    
+    <Flows>
+        <Flow name="MainFlow">
+            <Request>
+                <Step>
+                    <Name>Service-Callout-Backend</Name>
+                    <Condition>circuit.breaker.allowed == true</Condition>
+                </Step>
+            </Request>
+            <Response>
+                <!-- Record success if backend responds properly -->
+                <Step>
+                    <Name>Circuit-Breaker-Success</Name>
+                    <Condition>response.status.code == 200</Condition>
+                </Step>
+            </Response>
+        </Flow>
+        
+        <Flow name="FallbackFlow">
+            <Request>
+                <!-- Fallback response when circuit is open -->
+                <Step>
+                    <Name>Assign-Message-Fallback</Name>
+                </Step>
+            </Request>
+            <Condition>circuit.breaker.allowed == false</Condition>
+        </Flow>
+    </Flows>
+    
+    <PostFlow>
+        <Response>
+            <!-- Record failure for non-2xx responses -->
+            <Step>
+                <Name>Circuit-Breaker-Failure</Name>
+                <Condition>response.status.code >= 500</Condition>
+            </Step>
+        </Response>
+    </PostFlow>
+</ProxyEndpoint>

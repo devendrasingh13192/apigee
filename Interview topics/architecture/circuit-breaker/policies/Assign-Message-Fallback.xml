@@ -1,0 +1,22 @@
+<!-- /policies/circuit-breaker/Assign-Message-Fallback.xml -->
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage name="Assign-Message-Fallback">
+    <DisplayName>Circuit Breaker Fallback</DisplayName>
+    <Set>
+        <Payload contentType="application/json">
+            {
+                "status": "service_unavailable",
+                "message": "Service is temporarily unavailable due to high error rate",
+                "circuit_state": "{circuit.breaker.state}",
+                "retry_after": "30",
+                "fallback_data": {
+                    "cached": true,
+                    "timestamp": "{system.timestamp}"
+                }
+            }
+        </Payload>
+        <StatusCode>503</StatusCode>
+        <ReasonPhrase>Service Unavailable</ReasonPhrase>
+    </Set>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</AssignMessage>

@@ -1,0 +1,13 @@
+<!-- /policies/caching/response-cache-populate.xml -->
+<PopulateCache name="Response-Cache-Populate">
+    <CacheKey>
+        <KeyFragment ref="request.uri" />
+        <KeyFragment ref="request.header.accept" />
+    </CacheKey>
+    <CacheResource>ResponseCache</CacheResource>
+    <Scope>Exclusive</Scope>
+    <ExpirySettings>
+        <TimeoutInSec>300</TimeoutInSec>
+    </ExpirySettings>
+    <Source>response</Source>
+</PopulateCache>
