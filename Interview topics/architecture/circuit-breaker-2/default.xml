@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+    <PreFlow name="PreFlow">
+        <Request>
+            <!-- Step 1 & 2: Check circuit state and fail fast if OPEN -->
+            <Step>
+                <Name>JS-Circuit-Breaker</Name>
+            </Step>
+            <Step>
+                <Name>RF-Circuit-Open</Name>
+                <Condition>circuit.state = "OPEN"</Condition>
+            </Step>
+        </Request>
+        <Response/>
+    </PreFlow>
+
+    <Flows>
+        <Flow name="main-flow">
+            <Request/>
+            <Response/>
+            <Condition>proxy.pathsuffix MatchesPath "/your-api-path"</Condition>
+        </Flow>
+    </Flows>
+
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response>
+            <!-- Step 4 & 5: Track failures only when backend call fails -->
+            <Step>
+                <Name>JS-Circuit-Breaker</Name>
+                <Condition>message.reason.phrase != "OK"</Condition>
+            </Step>
+        </Response>
+    </PostFlow>
+
+    <HTTPProxyConnection>
+        <BasePath>/v1/circuit-breaker-demo</BasePath>
+        <VirtualHost>default</VirtualHost>
+    </HTTPProxyConnection>
+    <RouteRule name="default-route">
+        <TargetEndpoint>default</TargetEndpoint>
+    </RouteRule>
+</ProxyEndpoint>

@@ -21,3 +21,21 @@ Explain how you'd implement a circuit breaker pattern in Apigee in very brief
 **Result**: **Prevent cascading failures!** ⚡  
 
 Need a policy snippet? 🚀
+
+
+"The implementation would work like this:"
+
+1.PreFlow: JavaScript checks cache for circuit state
+
+2.If OPEN: Immediate RaiseFault with cached response or 503
+
+3.If CLOSED: Proceed to backend, JavaScript tracks success/failure
+
+4.PostFlow: On backend failure, JavaScript increments failure count in cache
+
+5.When threshold breached: Update cache state to OPEN with TTL = cooldown period
+
+
+"To prevent race conditions, I'd use cache entry keys with expiration and potentially atomic increments through 
+JavaScript, or use a dedicated external circuit breaker service for more complex scenarios."
+
