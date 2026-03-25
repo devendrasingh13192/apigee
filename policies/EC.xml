@@ -10,3 +10,9 @@
         }</Input>
     <Output>cloud-extension-example-log</Output>
 </ConnectorCallout>
+
+<!-- ------------------------------------------------------------
+
+Use the ExtensionCallout policy to incorporate an extension into an API proxy.
+
+An extension provides access to a specific resource external to Apigee Edge. The resource could be Google Cloud Platform services such as Cloud Storage or Cloud Speech-to-Text. But the resource could be any external resource accessible over HTTP or HTTPS. -->
