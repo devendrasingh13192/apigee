@@ -21,3 +21,34 @@ The Populate Cache policy is designed for writing entries in a short-term genera
 the Lookup Cache policy (for reading cache entries) and the Invalidate Cache policy (for invalidating entries).
 
 For caching the responses of backend resources, see the Response Cache policy. -->
+
+This policy writes the backend target's HTTP response object into Apigee’s distributed in-memory cache so future requests can retrieve it without hitting the backend server.
+
+---
+
+### Breakdown of What Each Element Does
+
+* **`<CacheResource>mobile-cache</CacheResource>`**
+Specifies the dedicated cache resource where the data lives. If not created explicitly in the environment, Apigee falls back to the default shared cache.
+* **`<Scope>Exclusive</Scope>`**
+Restricts the cache entry's visibility so it can only be accessed by this specific API proxy in this specific environment, preventing other proxies from overwriting or reading this data.
+* **`<TimeoutInSec>300</TimeoutInSec>`**
+Sets the Time-To-Live (TTL). The cached response stays in memory for **5 minutes (300 seconds)** before expiring automatically.
+* **`<Source>response</Source>`**
+Defines the data payload to cache. In this case, it captures the entire response message (headers and payload) received from the target backend.
+* **`<Key>` Construction**
+Generates a dynamic, composite cache key to store the entry under:
+* **`<Prefix>MOBILE_{client.app.id}</Prefix>`**: Segregates cached responses per client application ID (e.g., `MOBILE_app123`).
+* **`<Fragment>`**: Appends a delimiter (`_`) followed by the requested URI path and query string (e.g., `/products?category=phones`).
+* **Resulting Cache Key Example:** `MOBILE_app123_/products?category=phones`
+
+
+
+---
+
+### How It Works in Practice
+
+1. Typically placed in the **Target Response Flow** (or **Proxy Response Flow**).
+2. When a mobile app makes a request, the backend responds.
+3. This policy saves that backend response using the constructed key.
+4. On subsequent calls, a companion **`<LookupCache>`** policy placed in the Request Flow can read from this same key and return the cached response immediately, bypassing the backend entirely.

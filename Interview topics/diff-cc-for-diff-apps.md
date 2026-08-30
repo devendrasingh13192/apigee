@@ -91,6 +91,10 @@ Credentials:
 ```xml
 <Flow name="Mobile-App-Flow">
     <Condition>(client.app.name = "MyApp Android") or (client.app.name = "MyApp iOS")</Condition>
+    <!-- <Condition>client.app.name JavaRegex "(MyApp Android|MyApp iOS)"</Condition>
+    <Condition>client.app.name ~~ "MyApp (Android|iOS)"</Condition>
+    <Condition>client.app.name Matches "MyApp *"</Condition> 
+    <Condition>client.app.name := "myapp android"</Condition>-->
     <Request>
         <Step>
             <Name>Verify-Mobile-RateLimit</Name>
