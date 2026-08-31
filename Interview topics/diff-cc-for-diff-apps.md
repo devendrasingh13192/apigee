@@ -99,10 +99,11 @@ Credentials:
         <Step>
             <Name>Verify-Mobile-RateLimit</Name>
         </Step>
+    </Request>
         <Step>
             <Name>Transform-For-Mobile</Name>
         </Step>
-    </Request>
+    <Response></Response>
 </Flow>
 
 <Flow name="Desktop-App-Flow">
@@ -111,10 +112,12 @@ Credentials:
         <Step>
             <Name>Verify-Desktop-RateLimit</Name>
         </Step>
+    </Request>
+    <Response>
         <Step>
             <Name>Transform-For-Desktop</Name>
         </Step>
-    </Request>
+    </Response>
 </Flow>
 ```
 

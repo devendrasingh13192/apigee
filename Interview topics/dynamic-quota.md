@@ -6,28 +6,43 @@ Absolutely. Here's a concrete policy example:
 First, create a KVM named `quota_config` with entries:
 ```json
 {
+  "SILVER_STANDARD_LIMIT": "10000",
   "GOLD_STANDARD_LIMIT": "50000",
-  "devapp123_temp_override": "75000" // devapp123 gets 75k until expiry
+  "PLATINUM_STANDARD_LIMIT": "100000",
+  "DEFAULT_STANDARD_LIMIT": "1000",
+  "devapp123_temp_override": "75000"
 }
 ```
 
 ## **2. JavaScript Policy (JS-SetDynamicQuota)**
 ```javascript
-// JS-SetDynamicQuota
+// JS-SetDynamicQuota.js
 var developerApp = context.getVariable('developer.app.name');
-var tier = context.getVariable('verifyapikey.VerifyAPIKey.apiproduct.tier');
+var tier = context.getVariable('verifyapikey.VerifyAPIKey.apiproduct.tier') || 'DEFAULT';
 
-// Get standard limit from KVM
-var standardLimit = context.getVariable('kvm.quota_config.GOLD_STANDARD_LIMIT');
-
-// Check for temporary override
+// 1. Check for temporary developer/app-specific override in KVM first
 var tempLimit = context.getVariable('kvm.quota_config.' + developerApp + '_temp_override');
 
-// Use override if exists, else standard limit
-var finalQuotaLimit = tempLimit || standardLimit;
+var finalQuotaLimit;
 
+if (tempLimit) {
+    finalQuotaLimit = parseInt(tempLimit, 10);
+} else {
+    // 2. Resolve standard limit based on product tier from KVM
+    var tierKey = tier.toUpperCase() + '_STANDARD_LIMIT';
+    var tierLimit = context.getVariable('kvm.quota_config.' + tierKey);
+    
+    if (tierLimit) {
+        finalQuotaLimit = parseInt(tierLimit, 10);
+    } else {
+        // Fallback default if tier is missing or unmapped
+        finalQuotaLimit = 1000; 
+    }
+}
+
+// 3. Export variables to flow context for the Quota policy
 context.setVariable('dynamic_quota_limit', finalQuotaLimit);
-context.setVariable('quota_identifier', developerApp); // Unique ID for counting
+context.setVariable('quota_identifier', developerApp);
 ```
 
 ## **3. Quota Policy (Quota-EnforceTier)**

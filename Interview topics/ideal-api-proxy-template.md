@@ -448,3 +448,60 @@ context.setVariable("response.header.Content-Type", "application/json");
 10. **Timeout Configuration**: Proper backend connection timeouts
 
 This template follows enterprise best practices and can be adapted based on your specific requirements.
+
+
+
+---------------------------------------------------------------------------------------------------------------
+
+```
+[Client Request] 
+      │
+      ▼
+[ProxyEndpoint: PreFlow (Req)]
+      │
+      ▼
+[ProxyEndpoint: Conditional Flows (Req)]
+      │
+      ▼
+[ProxyEndpoint: PostFlow (Req)]
+      │
+      ▼
+[RouteRule]
+      │
+      ▼
+[TargetEndpoint: PreFlow (Req)]
+      │
+      ▼
+[TargetEndpoint: Conditional Flows (Req)]
+      │
+      ▼
+[TargetEndpoint: PostFlow (Req)]
+      │
+      ▼
+[Target Backend Server]
+      │
+      ▼
+[TargetEndpoint: PreFlow (Resp)]
+      │
+      ▼
+[TargetEndpoint: Conditional Flows (Resp)]
+      │
+      ▼
+[TargetEndpoint: PostFlow (Resp)]
+      │
+      ▼
+[ProxyEndpoint: PreFlow (Resp)]
+      │
+      ▼
+[ProxyEndpoint: Conditional Flows (Resp)]
+      │
+      ▼
+[ProxyEndpoint: PostFlow (Resp)]
+      │
+      ▼
+[Client Receives Response]
+      │
+      ▼
+[PostClientFlow (MessageLogging)]
+
+```
