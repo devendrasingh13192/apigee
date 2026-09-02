@@ -1,0 +1,11 @@
+Caching should be strictly avoided in an Apigee proxy when responses involve real-time state changes, compliance restrictions, or unique per-request processing.
+
+The primary scenarios where caching must not be used include:
+
+* **Non-Idempotent / State-Mutating Operations:** HTTP methods like `POST`, `PUT`, `PATCH`, and `DELETE` alter server-side data. Caching these responses violates HTTP semantics and risks serving stale confirmation states or suppressing subsequent writes.
+* **Highly Sensitive & Regulated Data (PCI-DSS, HIPAA, GDPR):** Apigee L1/L2 caches reside in memory and disk on the message processors. Data like raw card numbers (PAN), CVVs, passwords, medical records, or unencrypted PII must not be cached to avoid audit violations and data leakage across tenants.
+* **Real-Time Financial & Transactional States:** Operations such as payment authorization, card balance inquiries, live order placements, and stock trading executions must always reflect the authoritative ledger. Caching these risks double-charging, overdrafting, or executing against stale rates.
+* **One-Time & Ephemeral Security Tokens:** Short-lived tokens—such as single-use OAuth authorization codes, OTPs, MFA challenges, and PKCE verifications—must be invalidated immediately upon consumption and never cached.
+* **High-Cardinality or Unique Per-Request Payloads:** If requests feature high entropy (e.g., searches containing unique timestamps, client-generated nonce parameters, or distinct geo-coordinates down to millimeters), the cache hit ratio approaches 0%. Caching here wastes message processor memory and incurs lookup overhead without latency benefits.
+* **User-Specific Context Without Isolated Cache Keys:** If an endpoint serves personalized user data (e.g., `/v1/profile`) and the cache key fails to include distinct tenant and user identifiers, one user risks seeing another user's private data.
+* **Backend Responses with Restrictive Headers:** Responses carrying explicit HTTP cache directives such as `Cache-Control: no-store`, `Cache-Control: private`, or `Pragma: no-cache` should be respected, rather than forced into cache via proxy policies.

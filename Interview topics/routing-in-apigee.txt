@@ -57,4 +57,23 @@ Apigee provides several ways to route requests to multiple backend services. Her
 ## 7. **Weighted Routing**
    - Use the Traffic Management feature to distribute traffic by percentage
 
+   <TargetEndpoint name="default">
+  <HTTPTargetConnection>
+    <LoadBalancer>
+      <Algorithm>Weighted</Algorithm>
+
+      <!-- Target A: Receives 80% of total traffic -->
+      <Server name="target-server-v1">
+        <Weight>8</Weight>
+      </Server>
+
+      <!-- Target B (Canary/New Version): Receives 20% of total traffic -->
+      <Server name="target-server-v2">
+        <Weight>2</Weight>
+      </Server>
+    </LoadBalancer>
+    <Path>/api/v1</Path>
+  </HTTPTargetConnection>
+</TargetEndpoint>
+
 The best approach depends on your specific requirements for routing logic, traffic distribution, and backend capabilities.
