@@ -1,0 +1,34 @@
+<MaskDataConfiguration name="default">
+    <Namespaces>
+        <Namespace prefix="myco">http://example.com</Namespace>
+    </Namespaces>
+    <XPathsRequest>
+        <XPathRequest>/myco:Greeting/myco:User</XPathRequest>
+    </XPathsRequest>
+    <XPathsResponse>
+        <XPathResponse>/myco:Greeting/myco:User</XPathResponse>
+    </XPathsResponse>
+    <JSONPathsRequest>
+        <JSONPathRequest>$.store.book[*].author</JSONPathRequest>
+    </JSONPathsRequest>
+    <JSONPathsResponse>
+        <JSONPathResponse>$.store.book[*].author</JSONPathResponse>
+    </JSONPathsResponse>
+    <XPathsFault>
+        <XPathFault>/myco:Greeting/myco:User</XPathFault>
+    </XPathsFault>
+    <JSONPathsFault>
+        <JSONPathFault>$.store.book[*].author</JSONPathFault>
+    </JSONPathsFault>
+    <Variables>
+        <Variable>request.header.user-agent</Variable>
+        <Variable>request.formparam.password</Variable>
+    </Variables>
+</MaskDataConfiguration>
+
+
+<Get assignTo="private.hiddenData">
+
+<!-- Warning: Data masking is enabled only when a trace session or debug session is enabled for an API proxy. 
+If no trace or debug sessions are enabled on an API proxy, the data will not be masked. If you change your data
+ masking configuration, you must stop and restart the tracing session to see the effect of your changes. -->
