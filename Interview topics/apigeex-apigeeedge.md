@@ -116,17 +116,11 @@ In Edge, traffic entered public router IPs, and southbound traffic egressed thro
 
 ---
 
-### 2. Security Reconfiguration
+# 2. Security Reconfiguration
 
 Security shifts from being isolated inside Apigee policies to a shared model combining Google Cloud network security perimeter with proxy policies.
 
-| Security Layer | Apigee Edge Model | Apigee X Replacement | Where to Configure |
-| --- | --- | --- | --- |
-| **DDoS & WAF Protection** | Basic Edge proxy limits / 3rd-party CDN | **Google Cloud Armor** attached directly to the External HTTPS LB | GCP Console $\rightarrow$ **Network Security** $\rightarrow$ **Cloud Armor Policies** |
-| **TLS & Key Management** | Edge KeyStores & TrustStores | **Google Cloud Certificate Manager** for Northbound; Apigee Keystores for Southbound mTLS | GCP Console $\rightarrow$ **Certificate Manager** |
-| **Secrets & Keys** | Encrypted KVMs | **Google Cloud Secret Manager** or Apigee Encrypted KVMs | GCP Console $\rightarrow$ **Security** $\rightarrow$ **Secret Manager** |
-| **Identity & RBAC** | Edge Role-Based Access (RBAC) via Apigee UI | **Google Cloud IAM** (e.g., `roles/apigee.admin`, `roles/apigee.developer`) | GCP Console $\rightarrow$ **IAM & Admin** |
-| **Data Exfiltration** | N/A | **VPC Service Controls (VPC-SC)** to create a cryptographic security perimeter around your Apigee org | GCP Console $\rightarrow$ **Security** $\rightarrow$ **VPC Service Controls** |
+![Image](../assets/Gemini_Generated_Image_k84032k84032k840.png)
 
 * **mTLS to Backends:** Re-import your backend private keys and intermediate CA bundles into the Apigee X environment-scoped KeyStores and TrustStores using the Apigee API:
 ```bash
