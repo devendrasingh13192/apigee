@@ -55,3 +55,150 @@ This is why migrations from Edge/Hybrid to X are primarily **infrastructure and 
 Your investment in **API proxy development, policy logic, and business rules is preserved**. The migration is about **lifting your existing API proxies and dropping them into a more powerful, cloud-native operational platform**.
 
 This compatibility is by design - Google wants to make the transition from Edge/Hybrid to X as seamless as possible for existing Apigee customers.
+
+=======================================================================================================
+
+Configuration in edge 
+
+Migrating from **Apigee Edge** (SaaS or OPDK) to **Apigee X** is fundamentally a shift from a multi-tenant, Edge-hosted infrastructure to a **Google Cloud-native, single-tenant private instance**.
+
+In Apigee X, runtime instances live inside a Google-managed tenant VPC that communicates directly with your Google Cloud VPC. This fundamentally changes how networking, security, and operations are managed.
+
+---
+
+### Infrastructure Architectural Shift
+
+```
+[ Apigee Edge ]                                     [ Apigee X ]
+Internet ──► Edge Routers (Public IPs)              Internet ──► Cloud Armor (WAF) + External HTTPS LB
+             │                                                                │
+             ▼                                                                ▼
+       Edge Policies (Static IP Whitelisting)                   Private Service Access (PSA / VPC Peering)
+             │                                                                │
+             ▼                                                                ▼
+    Target (Public/VPN/Direct Connect)                          Apigee X Runtime (Private IP /22)
+                                                                              │
+                                                                              ▼
+                                                                Private Service Connect (PSC) / Cloud Interconnect
+                                                                              │
+                                                                              ▼
+                                                                Internal Backends (GKE, Cloud Run, On-Prem)
+
+```
+
+---
+
+### 1. Networking Reconfiguration
+
+In Edge, traffic entered public router IPs, and southbound traffic egressed through a pool of Edge NAT IPs. In Apigee X, **the runtime has no public IP addresses**.
+
+**Northbound (Ingress):**
+
+* **Where to configure:** Google Cloud Console $\rightarrow$ **Network Services** $\rightarrow$ **Load Balancing**, or via Terraform (`google_compute_global_forwarding_rule`).
+* **What to do:**
+1. Provision a **Google Cloud External Application Load Balancer (Global HTTPS LB)**.
+2. Configure a **Serverless Network Endpoint Group (NEG)** or an **Internal IP Managed Instance Group (MIG)** running an Envoy proxy pointing to the Apigee X runtime IP.
+3. Attach your TLS/SSL certificates directly to the Google Cloud Load Balancer (or use Google-managed SSL certificates).
+4. Update external DNS (e.g., Cloud DNS, Route53) to point public API hostnames to the new Global LB Anycast IP.
+
+
+
+**Southbound (Egress to Backends):**
+
+* **Where to configure:** **VPC Network** $\rightarrow$ **VPC Network Peering / Private Service Connect**.
+* **What to do:**
+* **To Google Cloud Backends (GKE / Compute Engine):** Establish **Private Service Access (PSA)** between your custom VPC and the Apigee X tenant VPC (allocating a `/22` or `/23` CIDR range). Traffic travels over Google’s private backbone without hitting the public internet.
+* **To Multi-Tenant Google Services (Cloud Run / Cloud Functions):** Use **Private Service Connect (PSC)** endpoints so Apigee X routes directly into your internal VPC endpoints.
+* **To On-Premise Data Centers:** Use **Cloud Interconnect** or **Cloud VPN** attached to your transit VPC. Ensure your BGP routes advertise the Apigee X allocated CIDR block to your on-premises firewalls.
+* **To External 3rd-Party APIs:** Set up a **Cloud NAT Gateway** in your VPC so egress outbound traffic routes through deterministic, static public egress IPs that third-party vendors can allowlist.
+
+
+
+---
+
+### 2. Security Reconfiguration
+
+Security shifts from being isolated inside Apigee policies to a shared model combining Google Cloud network security perimeter with proxy policies.
+
+| Security Layer | Apigee Edge Model | Apigee X Replacement | Where to Configure |
+| --- | --- | --- | --- |
+| **DDoS & WAF Protection** | Basic Edge proxy limits / 3rd-party CDN | **Google Cloud Armor** attached directly to the External HTTPS LB | GCP Console $\rightarrow$ **Network Security** $\rightarrow$ **Cloud Armor Policies** |
+| **TLS & Key Management** | Edge KeyStores & TrustStores | **Google Cloud Certificate Manager** for Northbound; Apigee Keystores for Southbound mTLS | GCP Console $\rightarrow$ **Certificate Manager** |
+| **Secrets & Keys** | Encrypted KVMs | **Google Cloud Secret Manager** or Apigee Encrypted KVMs | GCP Console $\rightarrow$ **Security** $\rightarrow$ **Secret Manager** |
+| **Identity & RBAC** | Edge Role-Based Access (RBAC) via Apigee UI | **Google Cloud IAM** (e.g., `roles/apigee.admin`, `roles/apigee.developer`) | GCP Console $\rightarrow$ **IAM & Admin** |
+| **Data Exfiltration** | N/A | **VPC Service Controls (VPC-SC)** to create a cryptographic security perimeter around your Apigee org | GCP Console $\rightarrow$ **Security** $\rightarrow$ **VPC Service Controls** |
+
+* **mTLS to Backends:** Re-import your backend private keys and intermediate CA bundles into the Apigee X environment-scoped KeyStores and TrustStores using the Apigee API:
+```bash
+curl -X POST "https://apigee.googleapis.com/v1/organizations/$ORG/environments/$ENV/keystores" \
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" ...
+
+```
+
+
+
+---
+
+### 3. Monitoring, Telemetry, and Logging Reconfiguration
+
+Apigee Edge used internal analytics dashboards and syslog to push logs out. Apigee X is fully wired into **Google Cloud Observability (Operations Suite)**.
+
+**Logging:**
+
+* **Where to configure:** **Proxy `PostClientFlow**` and GCP Console $\rightarrow$ **Logging** $\rightarrow$ **Logs Router**.
+* **What to do:**
+1. Replace custom third-party syslog daemons in `<MessageLogging>` with native **`<CloudLogging>`**:
+```xml
+<MessageLogging name="ML-CloudLogging">
+  <CloudLogging>
+    <LogName>projects/{organization.name}/logs/apigee-runtimes</LogName>
+    <Message contentType="application/json">
+      { "client": "{client.ip}", "status": "{response.status.code}" }
+    </Message>
+  </CloudLogging>
+</MessageLogging>
+
+```
+
+
+2. Configure **Cloud Logging Log Sinks** to stream those logs into **BigQuery** (for transaction querying), **Cloud Storage** (for compliance archive), or **Pub/Sub** (to ingest into Splunk/Datadog).
+
+
+
+**Metrics & Dashboards:**
+
+* **Where to configure:** GCP Console $\rightarrow$ **Monitoring** $\rightarrow$ **Dashboards / Alerting**.
+* **What to do:**
+* Build dashboards tracking the built-in Apigee X metrics:
+* `[apigee.googleapis.com/proxy/response_count](https://apigee.googleapis.com/proxy/response_count)` (Traffic volume)
+* `[apigee.googleapis.com/proxy/latencies](https://apigee.googleapis.com/proxy/latencies)` (Target latency vs. Gateway latency)
+
+
+* Set up Cloud Monitoring alert policies for error rate thresholds (e.g., `response_code >= 500` exceeding 2% over 5 minutes) sending webhooks to PagerDuty or Slack.
+
+
+
+---
+
+### Step-by-Step Migration Execution Sequence
+
+1. **Step 1: Provision Core Infrastructure via Terraform**
+* Create the VPC, allocate the `/22` IP range, configure Private Service Access, and provision the Apigee X organization and environment groups.
+
+
+2. **Step 2: Build Northbound Ingress & Cloud Armor**
+* Deploy the External HTTPS Load Balancer, configure SSL certs, and attach Cloud Armor WAF rules (OWASP Top 10, IP rate limiting).
+
+
+3. **Step 3: Establish Southbound Connectivity & TargetServers**
+* Configure Cloud Interconnect / VPN / PSC endpoints to your internal backends.
+* Recreate all environment TargetServers in Apigee X to point to your internal VPC/PSC hostnames rather than public IPs.
+
+
+4. **Step 4: Deploy Proxies & Validate with Apickli/Postman**
+* Deploy proxies to the Apigee X environment and execute integration test suites against the new Load Balancer endpoint.
+
+
+5. **Step 5: Canary Traffic Shift via DNS**
+* Reduce TTL on existing Edge DNS records to 300 seconds.
+* Shift traffic progressively using weighted DNS (e.g., 90% Edge, 10% Apigee X) while monitoring latency and error metrics in Cloud Monitoring before executing the complete cutover.
