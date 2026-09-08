@@ -90,7 +90,9 @@ Internet ──► Edge Routers (Public IPs)              Internet ──► Clo
 
 ### 1. Networking Reconfiguration
 
-In Edge, traffic entered public router IPs, and southbound traffic egressed through a pool of Edge NAT IPs. In Apigee X, **the runtime has no public IP addresses**.
+In Edge, traffic entered public router IPs, and southbound traffic egressed through a pool of Edge NAT IPs. 
+
+In Apigee X, **the runtime has no public IP addresses**.
 
 **Northbound (Ingress):**
 
@@ -109,7 +111,7 @@ In Edge, traffic entered public router IPs, and southbound traffic egressed thro
 * **What to do:**
 * **To Google Cloud Backends (GKE / Compute Engine):** Establish **Private Service Access (PSA)** between your custom VPC and the Apigee X tenant VPC (allocating a `/22` or `/23` CIDR range). Traffic travels over Google’s private backbone without hitting the public internet.
 * **To Multi-Tenant Google Services (Cloud Run / Cloud Functions):** Use **Private Service Connect (PSC)** endpoints so Apigee X routes directly into your internal VPC endpoints.
-* **To On-Premise Data Centers:** Use **Cloud Interconnect** or **Cloud VPN** attached to your transit VPC. Ensure your BGP routes advertise the Apigee X allocated CIDR block to your on-premises firewalls.
+* **To On-Premise Data Centers:** Use **Cloud Interconnect** or **Cloud VPN** attached to your transit VPC. Ensure your BGP (Border Gateway Protocol) routes advertise the Apigee X allocated CIDR(Classless Inter-Domain Routing) block to your on-premises firewalls.
 * **To External 3rd-Party APIs:** Set up a **Cloud NAT Gateway** in your VPC so egress outbound traffic routes through deterministic, static public egress IPs that third-party vendors can allowlist.
 
 
