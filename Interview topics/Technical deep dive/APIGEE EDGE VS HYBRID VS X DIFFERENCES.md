@@ -125,15 +125,7 @@ spec:
 
 ## 📊 **Feature Comparison Table**
 
-| Feature | Apigee Edge | Apigee Hybrid | Apigee X |
-|---------|-------------|---------------|----------|
-| **Deployment Model** | Fully managed SaaS | Hybrid (managed control plane) | Fully managed cloud-native |
-| **Infrastructure Control** | None | Runtime on your K8s | Fully managed by Google |
-| **Data Location** | Google-defined regions | Your chosen regions | Global with region control |
-| **Networking** | Standard Internet | VPC, on-premises connectivity | Global LB, Private Service Connect |
-| **Security** | Standard Apigee | Standard Apigee + your controls | Cloud Armor, reCAPTCHA Enterprise |
-| **Scaling** | Google-managed | Your K8s cluster + Google | Fully automatic global scaling |
-| **Cost Model** | Usage-based | Usage + infrastructure | Usage-based with premium features |
+![Image](./../../assets/Gemini_Generated_Image_5l8xrh5l8xrh5l8x.png)
 
 ---
 

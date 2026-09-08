@@ -2,20 +2,11 @@ The primary difference between **Google Cloud Datastore** (now operating as **Fi
 
 ---
 
-### Core Comparison
+# Core Comparison
 
-| Dimension | Cloud Datastore (Firestore in Datastore Mode) | BigQuery |
-| --- | --- | --- |
-| **System Category** | **OLTP** (Online Transaction Processing) | **OLAP** (Online Analytical Processing) |
-| **Data Model** | NoSQL document / entity-key store | Relational columnar tables (rows & columns) |
-| **Primary Workload** | High-throughput, low-latency single-row reads and writes | Complex aggregate queries over gigabytes to petabytes of data |
-| **Access Latency** | **Milliseconds** (typically sub-10ms) | **Seconds to minutes** |
-| **Query Mechanism** | Key-based lookups and indexed field queries (GQL / SDK APIs) | Standard SQL (`SELECT`, `JOIN`, `GROUP BY`, Window functions) |
-| **Joins & Aggregations** | No native joins; aggregations are limited/expensive | Full SQL joins, complex windowing, and large-scale aggregations |
-| **Transactions** | Full **ACID** transactions across document groups | Multi-statement transactions supported, but optimized for bulk batch/stream appends |
-| **Pricing Basis** | Per operation (read, write, delete) and storage volume | Data scanned by queries (or compute slots) and storage volume |
+![Image](../assets/Gemini_Generated_Image_i8f4zli8f4zli8f4.png)
 
----
+
 
 ### Key Architectural Differences
 

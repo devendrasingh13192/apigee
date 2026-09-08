@@ -15,10 +15,7 @@
 
 Apigee operates in two distinct roles:
 
-| Role | Apigee Policy | Mechanism |
-| --- | --- | --- | 
-| **Service Provider (SP)** | `ValidateSAMLAssertion` | Apigee receives an inbound XML payload or header containing a signed assertion, validates the digital signature against a **TrustStore** certificate, verifies timestamps/conditions, and extracts claims into flow variables (e.g., `saml.subject`, `saml.issuer`). |
-| **Identity Provider (IdP)** | `GenerateSAMLAssertion` | Apigee creates and digitally signs a new SAML 2.0 assertion using a **KeyStore** private key and injects it into outbound request payloads to the backend. |
+![Image](../assets/Gemini_Generated_Image_vd8rzivd8rzivd8r.png)
 
 ---
 

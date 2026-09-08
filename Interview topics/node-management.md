@@ -95,16 +95,11 @@ If you need to perform maintenance on nodes, follow this order to ensure client 
 **Start order**: Cassandra → ZooKeeper → Management Server → Message Processors → Router
 
 
-## 🎯 Summary: Client Traffic Management Across Nodes
+# 🎯 Summary: Client Traffic Management Across Nodes
 
-| Aspect | How It Works |
-|--------|--------------|
-| **Policies** | Quota and Spike Arrest policies attached to proxy endpoints |
-| **Distributed state** | Cassandra stores distributed counters; all MPs share quota data |
-| **Node scaling** | Add more Message Processors to handle increased client traffic |
-| **Capacity** | ~300 TPS per gateway node under optimal conditions |
-| **High availability** | Minimum 2 nodes per environment; load balancer distributes traffic |
-| **Node failure** | Quota data persists in Cassandra; other MPs continue processing |
+![Image](../assets/Gemini_Generated_Image_99qva99qva99qva9.png)
+
+
 
 ---
 

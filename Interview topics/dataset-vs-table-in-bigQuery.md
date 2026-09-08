@@ -2,17 +2,11 @@ When sending custom analytics data to Google BigQuery (whether via Apigee extens
 
 ---
 
-### Core Comparison
+# Core Comparison
 
-| Feature / Dimension | Dataset | Table |
-| --- | --- | --- |
-| **Role** | **Top-level container** (like a database or folder). | **Data storage entity** (like a spreadsheet or database table). |
-| **Contents** | Tables, Views, User-Defined Functions (UDFs), and ML Models. | Actual rows and columns of structured/semi-structured records. |
-| **Hierarchy Position** | `ProjectID.DatasetID` | `ProjectID.DatasetID.TableID` |
-| **Primary Controls** | IAM permissions, geographic data location (region/multi-region), default table expiration. | Data schemas, row/column partitioning, clustering, data types. |
-| **Data Ingestion Target** | Not targeted directly for writes. | **The direct target** for SQL `INSERT`, batch loads, and streaming API calls. |
+![Image](../assets/Gemini_Generated_Image_j5wswvj5wswvj5ws.png)
 
----
+
 
 ### How They Apply to Custom Data Analytics
 

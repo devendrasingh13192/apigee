@@ -1,15 +1,10 @@
 The Apigee Developer Portal is a customizable website that serves as the public-facing front door for your API program. Its core role is to help you publish, manage, and promote your APIs to external and internal developers. While the API Gateway (Edge) is the secure runtime engine, the portal is the marketing and onboarding hub that drives API adoption .
 
-### 🎯 The Core Role: Connecting Developers to Your APIs
+# 🎯 The Core Role: Connecting Developers to Your APIs
 
-The portal's primary functions are to help developers help themselves:
+![Image](../assets/Gemini_Generated_Image_4me2mw4me2mw4me2.png)
 
-| Function | Key Activities & Purpose | Details & Citations |
-| :--- | :--- | :--- |
-| **📚 API Discovery & Documentation** | - Publish API catalogs, interactive documentation (using OpenAPI/SmartDocs), tutorials, and sample code. | To help developers find, understand, and test APIs before they start coding . |
-| **🔑 Self-Service Onboarding** | - Allow developers to create accounts, register apps, and obtain/manage API keys. | To streamline the process of getting developers authenticated and ready to use the APIs . |
-| **⚙️ Access & Product Management** | - Expose API Products (bundles of APIs with specific rate limits, etc.) for developers to request access for their apps. | To allow developers to subscribe to specific API Products, and for API providers to control and approve that access . |
-| **📈 Community & Support** | - Provide forums, blogs, FAQs, and documentation to foster a community and reduce support burden. | To create a central knowledge base and a space for developers to interact and help each other . |
+
 
 ### 🔄 Key Integration: The Portal and Edge Management
 

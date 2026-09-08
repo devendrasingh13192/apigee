@@ -4,13 +4,9 @@ In Apigee, OIDC is typically implemented to secure APIs, verify federated user i
 
 ---
 
-### Core Components of OIDC in Apigee
+# Core Components of OIDC in Apigee
 
-| Component | Role | Apigee Usage |
-| --- | --- | --- |
-| **ID Token (`id_token`)** | A signed JSON Web Token (JWT) representing user identity. | Apigee decodes, verifies cryptographic signatures, and checks claims (e.g., `iss`, `aud`, `exp`, `sub`). |
-| **UserInfo Endpoint** | A protected OAuth resource returning claims about the authenticated user. | Queried via Apigee using `<ServiceCallout>` when additional user profile attributes are needed. |
-| **Discovery / JWKS** | OpenID configuration metadata (`/.well-known/openid-configuration`) and public keys (`/jwks.json`). | Cached and referenced by Apigee policies to validate token signatures dynamically without hardcoded certificates. |
+![Image](../assets/Gemini_Generated_Image_gnnukggnnukggnnu.png)
 
 ---
 

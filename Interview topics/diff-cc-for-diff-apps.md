@@ -100,10 +100,11 @@ Credentials:
             <Name>Verify-Mobile-RateLimit</Name>
         </Step>
     </Request>
-        <Step>
+    <Response>
+    <Step>
             <Name>Transform-For-Mobile</Name>
         </Step>
-    <Response></Response>
+    </Response>
 </Flow>
 
 <Flow name="Desktop-App-Flow">
