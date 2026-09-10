@@ -8,11 +8,8 @@ Here's how traffic management works from a node perspective:
 
 In Apigee Edge (Private Cloud or SaaS), the gateway layer consists of two key node types that process client traffic:
 
-| Node Type | Role in Traffic Management |
-|-----------|---------------------------|
-| **Router** | Handles incoming client connections, SSL termination, and load balancing across Message Processors |
-| **Message Processor (MP)** | Executes policies (Quota, Spike Arrest, etc.), transforms messages, and communicates with backend services |
 
+![Image](../assets/Gemini_Generated_Image_xf39vgxf39vgxf39.png);
 All client requests flow through this chain: **Client → Router → Message Processor → Backend**
 
 
