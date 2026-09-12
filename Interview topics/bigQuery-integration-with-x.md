@@ -162,28 +162,4 @@ If you must write directly to BigQuery from the proxy without Pub/Sub, execute a
 
 ### Comparison of Patterns in Apigee X
 
-+---------------------------------------------------------------------------------------------------------+
-|                               APIGEE X TO BIGQUERY INTEGRATION PATTERNS                                 |
-+------------------------------------+--------------------+--------------------+--------------------------+
-| Integration Pattern                | Latency Impact     | Scalability        | Best Used For            |
-+------------------------------------+--------------------+--------------------+--------------------------+
-| 1. Pub/Sub -> BigQuery             | Negligible         | Massive            | High-volume operational  |
-|    [Apigee]                        | (< 15ms)           | (100k+ QPS)        | & transactional business |
-|       | ServiceCallout             |                    |                    | events                   |
-|       v                            |                    |                    |                          |
-|    [Cloud Pub/Sub]                 |                    |                    |                          |
-|       | BigQuery Subscription      |                    |                    |                          |
-|       v                            |                    |                    |                          |
-|    [BigQuery Table]                |                    |                    |                          |
-+------------------------------------+--------------------+--------------------+--------------------------+
-| 2. Analytics Datastore Export      | None               | Scheduled          | Platform-wide            |
-|    [Apigee Analytics Engine]       | (Asynchronous      | Batch Data         | operational health,      |
-|       | Scheduled Export Job       |  background job)   |                    | SLAs, and long-term      |
-|       v                            |                    |                    | capacity planning        |
-|    [Cloud Storage / BigQuery]      |                    |                    |                          |
-+------------------------------------+--------------------+--------------------+--------------------------+
-| 3. Direct REST Call                | High               | Limited            | Low-throughput proxies   |
-|    [Apigee]                        | (50-150ms+         | (Bound by BQ       | requiring immediate,     |
-|       | ServiceCallout (insertAll) |  per request)      |  streaming insert  | synchronous BigQuery     |
-|       v                            |                    |  API quotas)       | validation               |
-|    [BigQuery REST API]             |                    |                    |                          |
+![Image](../assets/Gemini_Generated_Image_dcuiezdcuiezdcui.png)
