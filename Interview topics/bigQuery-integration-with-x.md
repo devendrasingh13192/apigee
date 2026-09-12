@@ -1,48 +1,189 @@
-There are two primary ways to integrate BigQuery with Apigee X, depending on your specific use case. One method is for sending custom analytics data, and the other is for exporting Apigee's built-in analytics.
 
-### ⚙️ Method 1: Send Custom Data via Extension
+---
+# Integrating BigQuery with Apigee X: Technical Architecture Guide
 
-This is the best method for logging custom business events or request/response payloads directly from your API proxy logic.
+There are three architectural patterns to integrate Apigee X with BigQuery depending on whether you need custom event ingestion, platform analytics exports, or asynchronous high-throughput pipelines.
 
-1.  **Prerequisites**: You must enable the BigQuery API in your Google Cloud project and create the target dataset and table beforehand .
-2.  **Create Service Account**: In your GCP project, create a service account and download its JSON key file. You will need the contents of this file later .
-3.  **Add Extension in Apigee**: In the Apigee UI, navigate to **Admin > Extensions**. Click **+ Add Extension** and select the **Google BigQuery** package. Give it a name.
-4.  **Configure Extension**: When configuring, you must provide two key pieces of information :
-    - **Project ID**: Your Google Cloud project ID.
-    - **Credentials**: Paste the entire JSON content of the service account key file you downloaded.
-5.  **Use in Proxy**: In your API proxy, add an **Extension Callout policy**. Configure it to use the extension you just created and define the `insert` action with the dataset, table, and data rows .
+---
 
-**Example Policy XML**:
+### Method 1: Ingest Custom Business Events via Pub/Sub (Recommended Production Pattern)
+
+Direct synchronous calls to BigQuery from a proxy create latency spikes and risk quota throttling (`tabledata.insertAll`). The recommended enterprise pattern is to push events asynchronously to **Cloud Pub/Sub**, which streams directly into BigQuery.
+
+1. **Prerequisites:**
+* Create a BigQuery dataset and target table in your GCP project.
+* Create a Cloud Pub/Sub topic and a **BigQuery subscription** (a native, zero-code subscription that writes incoming messages straight to your BigQuery table).
+
+
+2. **Permissions:**
+* Grant the Apigee service identity or proxy identity the `roles/pubsub.publisher` role.
+
+
+3. **Use `<ServiceCallout>` in Apigee X with Native Google Auth:**
+* Use Apigee X's built-in `<GoogleAccessToken>` tag. Apigee automatically fetches and caches short-lived Google OAuth tokens without custom code or manual key rotation.
+
+
+
+**Production XML Configuration:**
+
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ExtensionCallout name="Log-to-BigQuery">
-    <DisplayName>Log to BigQuery</DisplayName>
-    <Extension>your-bigquery-extension-name</Extension>
-    <Action>insert</Action>
-    <Input><![CDATA[{
-        "dataset" : "your_dataset",
-        "table" : "your_table",
-        "rows" : [
-            {"api_name": "my-proxy", "response_code": "200", "timestamp": "{system.timestamp}"}
-        ]
-    }]]></Input>
-</ExtensionCallout>
+<ServiceCallout name="SC-Publish-To-PubSub">
+    <Request>
+        <Set>
+            <Headers>
+                <Header name="Content-Type">application/json</Header>
+            </Headers>
+            <Payload contentType="application/json">
+                {
+                    "messages": [
+                        {
+                            "data": "{encodeBase64(custom.analytics.payload)}"
+                        }
+                    ]
+                }
+            </Payload>
+            <Verb>POST</Verb>
+        </Set>
+    </Request>
+    <Response>pubsubResponse</Response>
+    <HTTPTargetConnection>
+        <!-- Native Google Auth in Apigee X -->
+        <Authentication>
+            <GoogleAccessToken>
+                <Scopes>
+                    <Scope>https://www.googleapis.com/auth/pubsub</Scope>
+                </Scopes>
+            </GoogleAccessToken>
+        </Authentication>
+        <URL>https://pubsub.googleapis.com/v1/projects/{organization.name}/topics/apigee-events:publish</URL>
+    </HTTPTargetConnection>
+</ServiceCallout>
+
 ```
 
-### 📊 Method 2: Export Apigee Analytics Data
+---
 
-Use this method to push Apigee's built-in analytics data (traffic, latency, error rates) to BigQuery for deeper analysis.
+### Method 2: Export Built-In Apigee Analytics Data
 
-1.  **Prepare Permissions**: Find your Apigee organization's service agent email via API and grant it the **BigQuery User** and **Storage Admin** roles in your GCP project's IAM .
-2.  **Create a Datastore**: In the Apigee UI, go to **Admin > Analytics Datastores**. Click **+ Add Datastore** and select **Google BigQuery** .
-3.  **Configure the Datastore**: Provide the details :
-    - **Name**: A display name for this connection.
-    - **Credentials**: Select the service account you set permissions for.
-    - **Project ID**: Your GCP project ID.
-    - **Dataset Name**: The BigQuery dataset where you want the data.
-    - **Table Prefix**: A prefix for the tables that will be created automatically.
-4.  **Export Data**: Once created, you can use the **Export Data** API or UI options to schedule or trigger one-time exports of your analytics data to BigQuery.
+Use this pattern to export platform-level metrics (proxy latency, response codes, traffic volumes) to BigQuery for long-term historical reporting.
 
-### 💡 Alternative: Direct REST Call
+1. **Service Agent IAM:**
+* Find the Apigee Organization Service Agent email via the Apigee API:
+```
+service-{ORG_PROJECT_NUMBER}@gcp-sa-apigee.iam.gserviceaccount.com
 
-A third option, which provides maximum flexibility, is to have your Apigee proxy call the BigQuery REST API directly using a **Service Callout** policy. This requires your proxy to handle OAuth2 authentication to obtain an access token for your service account .
+```
+
+
+* Grant this service account the **BigQuery Data Editor** (`roles/bigquery.dataEditor`) and **BigQuery Job User** (`roles/bigquery.jobUser`) roles on the target GCP project.
+
+
+2. **Create a Datastore (Apigee Management API):**
+* Apigee X does not have an "Admin > Analytics Datastores" UI option like legacy Edge. Create the datastore by making a `POST` request to the Apigee X control plane:
+
+
+```bash
+curl -X POST "https://apigee.googleapis.com/v1/organizations/{ORG}/analytics/datastores" \
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "bigquery_analytics_sink",
+    "targetType": "BIGQUERY",
+    "datasetName": "apigee_analytics",
+    "tablePrefix": "org_metrics"
+  }'
+
+```
+
+
+3. **Trigger / Schedule Export Jobs:**
+* Run export requests specifying the date range using the Apigee X export API endpoint:
+
+
+```bash
+POST https://apigee.googleapis.com/v1/organizations/{ORG}/environments/{ENV}/analytics/exports
+
+```
+
+
+
+---
+
+### Method 3: Direct Call to BigQuery REST API (`insertAll`)
+
+If you must write directly to BigQuery from the proxy without Pub/Sub, execute a REST call using `ServiceCallout`. Do not use hardcoded credentials or manual token handling.
+
+1. **Target Table:** Create your BigQuery dataset and table.
+2. **IAM:** Grant `roles/bigquery.dataEditor` to the service account executing the request.
+3. **Proxy Callout:** Call the BigQuery streaming insert endpoint using `<GoogleAccessToken>` with the BigQuery scope:
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ServiceCallout name="SC-Insert-BigQuery">
+    <Request>
+        <Set>
+            <Headers>
+                <Header name="Content-Type">application/json</Header>
+            </Headers>
+            <Payload contentType="application/json">
+                {
+                    "rows": [
+                        {
+                            "json": {
+                                "client_id": "{client_id}",
+                                "request_uri": "{request.uri}",
+                                "response_status": {response.status.code},
+                                "timestamp": "{system.timestamp}"
+                            }
+                        }
+                    ]
+                }
+            </Payload>
+            <Verb>POST</Verb>
+        </Set>
+    </Request>
+    <Response>bqResponse</Response>
+    <HTTPTargetConnection>
+        <Authentication>
+            <GoogleAccessToken>
+                <Scopes>
+                    <Scope>https://www.googleapis.com/auth/bigquery.insertdata</Scope>
+                </Scopes>
+            </GoogleAccessToken>
+        </Authentication>
+        <URL>https://bigquery.googleapis.com/bigquery/v2/projects/{organization.name}/datasets/my_dataset/tables/api_logs/data</URL>
+    </HTTPTargetConnection>
+</ServiceCallout>
+
+```
+
+---
+
+### Comparison of Patterns in Apigee X
+
++---------------------------------------------------------------------------------------------------------+
+|                               APIGEE X TO BIGQUERY INTEGRATION PATTERNS                                 |
++------------------------------------+--------------------+--------------------+--------------------------+
+| Integration Pattern                | Latency Impact     | Scalability        | Best Used For            |
++------------------------------------+--------------------+--------------------+--------------------------+
+| 1. Pub/Sub -> BigQuery             | Negligible         | Massive            | High-volume operational  |
+|    [Apigee]                        | (< 15ms)           | (100k+ QPS)        | & transactional business |
+|       | ServiceCallout             |                    |                    | events                   |
+|       v                            |                    |                    |                          |
+|    [Cloud Pub/Sub]                 |                    |                    |                          |
+|       | BigQuery Subscription      |                    |                    |                          |
+|       v                            |                    |                    |                          |
+|    [BigQuery Table]                |                    |                    |                          |
++------------------------------------+--------------------+--------------------+--------------------------+
+| 2. Analytics Datastore Export      | None               | Scheduled          | Platform-wide            |
+|    [Apigee Analytics Engine]       | (Asynchronous      | Batch Data         | operational health,      |
+|       | Scheduled Export Job       |  background job)   |                    | SLAs, and long-term      |
+|       v                            |                    |                    | capacity planning        |
+|    [Cloud Storage / BigQuery]      |                    |                    |                          |
++------------------------------------+--------------------+--------------------+--------------------------+
+| 3. Direct REST Call                | High               | Limited            | Low-throughput proxies   |
+|    [Apigee]                        | (50-150ms+         | (Bound by BQ       | requiring immediate,     |
+|       | ServiceCallout (insertAll) |  per request)      |  streaming insert  | synchronous BigQuery     |
+|       v                            |                    |  API quotas)       | validation               |
+|    [BigQuery REST API]             |                    |                    |                          |
